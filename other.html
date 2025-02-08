@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>言葉</title>
+    <script src="script.js" defer></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
 
@@ -291,31 +292,7 @@
     </div>
 
     <script>
-        // ヨルシカ的歌词及翻译
-        const quotes = [
-            { lyrics: "さよならだけが人生だ", song: "「言って。」", translation: "唯有离别才是人生。" },
-            { lyrics: "だから僕は音楽を辞めた", song: "「だから僕は音楽を辞めた」", translation: "所以我放弃了音乐。" },
-            { lyrics: "君の知らない物語", song: "「ノーチラス」", translation: "你所不知道的故事。" },
-            { lyrics: "春が来るまであと何日？", song: "「春泥棒」", translation: "距离春天到来还有多少天？" },
-            { lyrics: "ただ風を待つ", song: "「風を待つ」", translation: "只是等待风的到来。" },
-            { lyrics: "僕は今日も息をする", song: "「花に亡霊」", translation: "我今天依然呼吸着。" },
-            { lyrics: "僕らは命に嫌われている", song: "「藍二乗」", translation: "我们被生命所厌恶。" },
-            { lyrics: "もう二度と戻れないんだね", song: "「エルマ」", translation: "已经再也回不去了呢。" },
-            { lyrics: "飛行機雲を見上げていた", song: "「ヒッチコック」", translation: "仰望着飞机的尾迹云。" },
-            { lyrics: "君がいないと本当に退屈だ", song: "「言って。」", translation: "没有你真的很无聊。" },
-            { lyrics: "このまま僕らは嘘をついていよう", song: "「嘘月」", translation: "就这样，我们一直撒谎吧。" },
-            { lyrics: "僕ら ずっと遊んでいようよ", song: "「エイミー」", translation: "我们一直玩下去吧。"},
-            { lyrics: "生きてるだけで丸儲け", song: "「ヒッチコック」", translation: "只要活着就已经赚到了。" },
-            { lyrics: "僕は君のことが好きだ", song: "「言って。」", translation: "我喜欢你。" }
-        ];
-
-        // 获取元素
-        const quoteElement = document.getElementById("quote");
-        const songTitleElement = document.getElementById("song-title");
-        const translationElement = document.getElementById("translation");
-        const modeToggle = document.getElementById("modeToggle");
-        const timeDisplay = document.getElementById("timeDisplay");
-        const body = document.body;
+        /*
 
         // 点击时随机更换歌词
         quoteElement.addEventListener("click", function() {
@@ -330,6 +307,15 @@
                 quoteElement.style.opacity = "1";
             }, 500);
         });
+        */
+
+        // 获取元素
+        const quoteElement = document.getElementById("quote");
+        const songTitleElement = document.getElementById("song-title");
+        const translationElement = document.getElementById("translation");
+        const modeToggle = document.getElementById("modeToggle");
+        const timeDisplay = document.getElementById("timeDisplay");
+        const body = document.body;
 
         let glitchProbability = 0.3;
         if (document.body.classList.contains("night-mode")) {

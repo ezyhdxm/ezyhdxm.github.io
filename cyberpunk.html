@@ -5,7 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>言葉</title>
+    <script src="cyber.js" defer></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+        
+        @font-face {
+            font-family: "3270 Nerd Font";
+            src: url("assets/fonts/3270NerdFont-Regular.ttf") format("truetype");
+        }
         /* 页面淡入 */
         .fade-in {
             opacity: 0;
@@ -31,6 +38,59 @@
             75% { text-shadow: -3px -3px 8px #ff00ff, 3px 3px 8px #00ffff; }
             100% { text-shadow: 3px 0px 5px #ff00ff, -3px 0px 5px #00ffff; }
         }
+
+        .general-text {
+            font-family: "Noto Sans JP", monospace;
+            font-size: 20px;
+            color: #00ffff;
+            background-color: black;
+            padding: 10px;
+            display: inline-block;
+            border-radius: 5px;
+            text-shadow: 0 0 5px #33ff33, 0 0 10px #33ff33;
+        }
+
+        .commandline-text {
+            font-family: "3270 Nerd Font", monospace;
+            font-size: 20px;
+            color: #33ff33;
+            background-color: black;
+            padding: 10px;
+            display: inline-block;
+            border-radius: 5px;
+            text-shadow: 0 0 5px #33ff33, 0 0 10px #33ff33;
+        }
+
+        /* 添加终端扫描线效果 */
+        @keyframes scanline {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100%; }
+        }
+
+        .terminal {
+            background: black;
+            width: fit-content;
+            padding: 20px;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terminal::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                rgba(0, 255, 0, 0.1) 50%, 
+                rgba(0, 255, 0, 0.05) 50%
+            );
+            background-size: 100% 4px;
+            animation: scanline 0.2s linear infinite;
+        }
+
 
         .glitch-text.animated {
             animation: glitch 0.1s infinite alternate;
@@ -102,6 +162,11 @@
             color: #fff;
         }
 
+        .commandline-text:hover {
+            text-shadow: 3px 3px 15px rgba(0, 255, 255, 0.8);
+            color: #fff;
+        }
+
         .container {
             max-width: 80%;
             font-size: 1.5rem;
@@ -118,6 +183,7 @@
 
         /* 时间样式 */
         .time-display {
+            font-family: "3270 Nerd Font", monospace;
             position: absolute;
             top: 20px;
             left: 20px;
@@ -139,10 +205,15 @@
     <!-- 画布背景 -->
     <canvas id="matrixCanvas"></canvas>
 
+
     <h1 class="general-text glitch-text">サイバーパンク世界へようこそ</h1>
     <p class="general-text glitch-text">これは現実ではない。あなたは今、データの夢を見ている。</p>
     <p class="general-text glitch-text">ネットの彼方に、真実が待っている。</p>
-    <p class="general-text glitch-text">ERROR: Data Corrupted...</p>
+
+    <div class="terminal"></div>
+    <p class="commandline-text glitch-text">ERROR: Data Corrupted...</p>
+    <p class="commandline-text glitch-text">root@localhost:~# rm -rf /</p>
+    </div>
 
     <p class="poem glitch-text" id="poem">
         あまりにも馴染みのある言葉は詩的な味わいを失い...<br> 
@@ -178,24 +249,6 @@
 
         const blackScreen = document.getElementById("blackScreen");
 
-        // 诗句 & ヨルシカ歌词
-        const lyrics = [
-            "さよならだけが人生だ<br>—「言って。」",
-            "だから僕は音楽を辞めた<br>—「だから僕は音楽を辞めた」",
-            "君の知らない物語<br>—「ノーチラス」",
-            "春が来るまであと何日？<br>—「春泥棒」",
-            "ただ風を待つ<br>—「風を待つ」",
-            "僕は今日も息をする<br>—「花に亡霊」",
-            "僕らは命に嫌われている<br>—「藍二乗」",
-            "もう二度と戻れないんだね<br>—「エルマ」",
-            "飛行機雲を見上げていた<br>—「ヒッチコック」",
-            "君がいないと本当に退屈だ<br>—「言って。」",
-            "僕らはゆっくりと眠っていく<br>—「アルジャーノン」",
-            "僕ら ずっと遊んでいようよ<br>—「エイミー」",
-            "このまま僕らは嘘をついていよう<br>—「嘘月」",
-            "生きてるだけで丸儲け<br>—「ヒッチコック」",
-            "僕は君のことが好きだ<br>-「言って。」"
-        ];
 
         const poemElement = document.getElementById("poem");
 
@@ -221,7 +274,57 @@
 
         const columns = Math.floor(canvas.width / 20);
         const drops = Array(columns).fill(0);
+        
+        function drawMatrix() {
+            // 轻微透明的黑色遮罩，制造残影效果
+            ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+            // 设置基础字体
+            ctx.font = "16px '3270 Nerd Font', monospace";
+
+            drops.forEach((y, index) => {
+                let text = String.fromCharCode(0x30A0 + Math.random() * 96); // 生成 Katakana 字符
+                let x = index * 20 + (Math.random() - 0.5) * 5; // **1. 行列抖动效果**
+
+                ctx.fillStyle = "rgb(0,100,0)"; // 默认绿色字符
+
+                // **2. 10% 概率触发 Glitch（颜色 & 乱码）**
+                if (Math.random() < 0.1) {
+                    if (Math.random() < 0.2) {
+                        ctx.fillStyle = Math.random() < 0.5 ? "#ff0000" : "#00ffff"; // 变红或变蓝
+                    }
+                    text = Math.random() < 0.5 ? "█" : String.fromCharCode(0x2588 + Math.random() * 10); // 乱码
+                    x += (Math.random() - 0.5) * 2; // **字符随机左右漂移**
+                    ctx.fillText(text, x, y + (Math.random() - 0.5) * 2); // **字符随机上下漂移**
+                } else {
+                    ctx.fillText(text, x, y);
+                }
+
+                // **3. 10% 概率调整字符大小**
+                if (Math.random() < 0.05) {
+                    ctx.font = Math.random() < 0.5 ? "14px '3270 Nerd Font'" : "18px '3270 Nerd Font'"; // 大小随机变化
+                } else {
+                    ctx.font = "16px '3270 Nerd Font'"; // 还原字体大小
+                }
+
+                // **4. 1% 概率短暂故障效果（黑屏）**
+                if (Math.random() < 0.005) {
+                    ctx.fillStyle = "black";
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+
+                // **更新字符位置**
+                drops[index] = y > canvas.height || Math.random() > 0.975 ? 0 : y + 20;
+            });
+
+            // **5. 扫描线效果**
+            ctx.fillStyle = "rgba(0, 255, 0, 0.1)";
+            ctx.fillRect(0, Math.random() * canvas.height, canvas.width, 2);
+        }
+
+
+        /*
         function drawMatrix() {
             ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -235,6 +338,7 @@
                 drops[index] = y > canvas.height || Math.random() > 0.975 ? 0 : y + 20;
             });
         }
+            */
 
         setInterval(drawMatrix, 50);
 
