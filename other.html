@@ -31,6 +31,36 @@
             transition: opacity 0.5s ease-in-out;
         }
 
+        /* 📱 适配移动端：修改字体大小、宽度 */
+        @media (max-width: 768px) {
+            /* 让歌词文本不会超出屏幕 */
+            .container {
+                max-width: 90%;
+                font-size: 1.2rem;
+                line-height: 1.6;
+            }
+
+            /* 歌曲标题和翻译适配手机 */
+            .song-title, .translation {
+                font-size: 0.9rem;
+                margin-top: 8px;
+            }
+
+            /* 让 `time-display` 和 `mode-toggle` 按钮更大 */
+            .time-display {
+                font-size: 1rem;
+                top: 10px;
+                left: 10px;
+            }
+
+            .mode-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 8px 18px;
+                font-size: 1rem;
+            }
+        }
+
         /* 赛博朋克 Glitch 效果 */
         @keyframes glitch {
             0% { text-shadow: 3px 0px 5px #ff00ff, -3px 0px 5px #00ffff; }
@@ -62,7 +92,7 @@
 
         .container {
             max-width: 100%;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             line-height: 1.8;
             transition: opacity 0.5s ease-in-out, text-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
             position: relative;
@@ -79,7 +109,7 @@
 
         .song-title,
         .translation {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: #777;
             margin-top: 10px;
             transition: opacity 0.3s ease-in-out;
@@ -98,18 +128,22 @@
             margin-top: 8px;
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
+            text-align: center;
         }
 
 
         .hiragana {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             opacity: 0;
             position: absolute;
-            top: 0;
-            left: 0;
+            top: 10%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* 精准居中 */
             transition: opacity 0.3s ease-in-out;
-            width: 100%;
-            white-space: nowrap; 
+            width: 90%;
+            white-space: normal;
+            /*white-space: nowrap; */
+            text-align: center; /* 文字居中 */
         }
 
         .container:hover .original {
@@ -326,14 +360,13 @@
 
     <!-- 诗句显示区域 -->
     <div class="container" id="quote">
-        <div class="text hiragana" id="hiragana"> あまりにもなじみのあることばはしてきなあじわいをうしない、<br> 
-            むしろよめないもののほうがうつくしい。 </div>
+        <div class="text hiragana" id="hiragana"> </div>
         <div class="text original" id="original">
             あまりにも馴染みのある言葉は詩的な味わいを失い、<br>
             むしろ読めないものの方が美しい。
         </div>
         <div class="song-title" id="song-title">— 初期表示</div>
-        <div class="translation" id="translation">（悬停）</div>
+        <div class="translation" id="translation">（点击）</div>
     </div>
 
     <script>
