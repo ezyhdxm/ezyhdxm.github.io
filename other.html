@@ -6,6 +6,13 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>言葉</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+        @font-face {
+            font-family: 'DS-Digital';
+            src: url('https://assets.codepen.io/9632/DS-DIGI.TTF') format('truetype');
+        }
+
         /* 页面淡入 */
         .fade-in {
             opacity: 0;
@@ -84,72 +91,187 @@
             text-shadow: 3px 3px 10px rgba(100, 100, 100, 0.5);
         }
 
-        /* 🌑 夜晚模式 */
+        /* 🌙 重新设计夜晚模式（Tokyo Night 主题） */
         .night-mode {
-            background-color: #111 !important;
-            color: #ddd;
+            background: linear-gradient(135deg, #1a1b26, #16161e, #1f2335) !important;
+            color: #c0caf5;
+            transition: background-color 0.5s, color 0.5s;
         }
 
-        /* 🌥️ 阴天模式 */
-        .cloudy-mode {
-            background-color: #bbb !important;
-            color: #222;
+        /* 夜晚模式下的标题 */
+        .night-mode .song-title {
+            color: #a9b1d6;
         }
 
-        .cloudy-mode .song-title {
-            color: #444;
-        }
-
-        /* 🌥️ 阴天模式下的高亮（不使用阴影，改为变亮） */
-        .cloudy-mode .container:hover {
-            text-shadow: none;
-            color: #000;
-        }
-
-        /* 🌑 夜晚模式下的阴影 */
+        /* 夜晚模式下的 hover 效果 */
         .night-mode .container:hover {
-            text-shadow: 4px 4px 12px rgba(255, 255, 255, 0.4);
+            text-shadow: 4px 4px 10px rgba(192, 202, 245, 0.5);
+            color: #e0e9ff;
         }
 
-        /* 天气切换按钮 */
+        /* 夜晚模式下的按钮 */
+        .night-mode .mode-toggle {
+            border: 1px solid #7aa2f7;
+            color: #7aa2f7;
+        }
+
+        .night-mode .mode-toggle:hover {
+            background: rgba(122, 162, 247, 0.2);
+        }
+
+
+
+        /* 🌅 重新设计黄昏模式（柔和夕阳色） */
+        .dusk-mode {
+            background: linear-gradient(135deg, #FAE1DD, #F7C6B3, #E79E85) !important;
+            color: #4A3F35;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        /* 黄昏模式下的标题 */
+        .dusk-mode .song-title {
+            color: #6D5F53;
+        }
+
+        /* 黄昏模式下的 hover 效果 */
+        .dusk-mode .container:hover {
+            text-shadow: 3px 3px 8px rgba(255, 165, 130, 0.5);
+            color: #3D2F26;
+        }
+
+        /* 黄昏模式下的按钮 */
+        .dusk-mode .mode-toggle {
+            border: 1px solid #E79E85;
+            color: #E79E85;
+        }
+
+        .dusk-mode .mode-toggle:hover {
+            background: rgba(231, 158, 133, 0.2);
+        }
+
+
+        /* 🌞🌅🌙 模式切换按钮基础样式 */
         .mode-toggle {
             position: absolute;
             top: 20px;
             right: 20px;
             background: none;
-            border: 1px solid #777;
-            padding: 8px 20px;
+            border: 2px solid #777;
+            padding: 10px 24px;
             font-size: 1.2rem;
+            font-weight: bold;
             color: #777;
+            border-radius: 25px; /* 圆角按钮 */
             cursor: pointer;
-            transition: background 0.3s, color 0.3s, border 0.3s;
+            transition: background 0.4s, color 0.4s, border 0.4s, box-shadow 0.4s;
         }
 
-        .cloudy-mode .mode-toggle {
-            border: 1px solid #222;
-            color: #222;
+        /* ☀️ 晴天模式按钮 */
+        .mode-toggle {
+            border-color: #777;
+            color: #777;
         }
 
         .mode-toggle:hover {
-            background: rgba(100, 100, 100, 0.2);
+            background: rgba(200, 200, 200, 0.2);
+            box-shadow: 0 0 10px rgba(200, 200, 200, 0.3);
+        }
+
+        /* 🌅 黄昏模式按钮 */
+        .dusk-mode .mode-toggle {
+            border-color: #E79E85;
+            color: #E79E85;
+        }
+
+        .dusk-mode .mode-toggle:hover {
+            background: rgba(231, 158, 133, 0.2);
+            box-shadow: 0 0 10px rgba(231, 158, 133, 0.4);
+        }
+
+        /* 🌙 夜晚模式按钮（Tokyo Night） */
+        .night-mode .mode-toggle {
+            border-color: #7aa2f7;
+            color: #7aa2f7;
+        }
+
+        .night-mode .mode-toggle:hover {
+            background: rgba(122, 162, 247, 0.2);
+            box-shadow: 0 0 12px rgba(122, 162, 247, 0.5);
         }
 
         /* 实时时间 */
+        /* ⏳ 基础样式 */
         .time-display {
             position: absolute;
             top: 20px;
             left: 20px;
-            font-size: 1rem;
-            color: #777;
+            font-family: 'DS-Digital', 'Orbitron', sans-serif;
+            text-align: center;
             cursor: pointer;
             transition: text-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
         }
 
-        /* 鼠标悬停时的效果 */
+        /* 主时间部分 */
+        .time-display .clock {
+            font-size: 1.5rem;  /* 缩小时间字体 */
+            letter-spacing: 3px; /* 让时间更紧凑 */
+            display: block;
+        }
+
+        /* 日期部分 */
+        .time-display .date {
+            font-size: 0.8rem;  /* 日期更小 */
+            letter-spacing: 3px; /* 与时间保持一致 */
+            display: block;
+            margin-top: -5px;  /* 让时间和日期更紧密 */
+        }
+
+        /* 🌓 适配不同模式 */
+
+        /* ☀️ 晴天模式 */
+        .time-display {
+            color: #444;
+            text-shadow: 2px 2px 8px rgba(100, 100, 100, 0.4);
+        }
+
         .time-display:hover {
             text-shadow: 3px 3px 10px rgba(100, 100, 100, 0.5);
-            color: #000;
+            color: #222;
         }
+
+        /* 🌅 黄昏模式 */
+        .dusk-mode .time-display {
+            color: #B95B43;
+            text-shadow: 3px 3px 10px rgba(185, 91, 67, 0.5);
+        }
+
+        .dusk-mode .time-display:hover {
+            color: #833F2E;
+        }
+
+        /* 🌙 夜晚模式 (Tokyo Night) */
+        .night-mode .time-display {
+            color: #B8C1EC;
+            text-shadow: 3px 3px 10px rgba(184, 193, 236, 0.4);
+        }
+
+        .night-mode .time-display:hover {
+            color: #C9D1F4;
+            text-shadow: 4px 4px 12px rgba(192, 202, 245, 0.6);
+        }
+
+        /* 📱 适配移动端 */
+        @media (max-width: 768px) {
+            .time-display .clock {
+                font-size: 1.2rem;
+            }
+            .time-display .date {
+                font-size: 0.7rem;
+            }
+        }
+
+
+
     </style>
 </head>
 <body class="fade-in">
@@ -158,7 +280,7 @@
     <div class="time-display" id="timeDisplay">Loading time...</div>
 
     <!-- 天气模式切换按钮 -->
-    <button class="mode-toggle" id="modeToggle">☀️ </button>
+    <button class="mode-toggle" id="modeToggle">☀️</button>
 
     <!-- 诗句显示区域 -->
     <div class="container" id="quote">
@@ -205,11 +327,16 @@
             }, 500);
         });
 
+        let glitchProbability = 0.3;
+        if (document.body.classList.contains("night-mode")) {
+            glitchProbability = 0.6;
+        }
+
         // 点击时间时，淡出并返回 index.html
         timeDisplay.addEventListener("click", function() {
             event.preventDefault(); // 阻止默认跳转
             let rand = Math.random();
-            if (rand < 0.2) {
+            if (rand < glitchProbability) {
                 timeDisplay.classList.add("glitch");
                 quoteElement.classList.add("glitch");
             }
@@ -219,36 +346,112 @@
                 document.body.classList.add("fade-out");
             }, 500);
             
-            // 0.7s 后跳转回 index.html
+            // 1s 后跳转回 index.html
             setTimeout(() => {
                 window.location.href = "index.html";
             }, 1000);
         });
 
+        // 🌀 让夜晚模式随机产生 Glitch 效果
+        function triggerNightGlitch() {
+            if (document.body.classList.contains("night-mode")) {
+
+                // 30% 概率触发 Glitch
+                if (Math.random() < 0.3) {
+                    timeDisplay.classList.add("glitch");
+                    quoteElement.classList.add("glitch");
+                    setTimeout(() => {
+                        timeDisplay.classList.remove("glitch");
+                        quoteElement.classList.remove("glitch");
+                    }, Math.random() * 2000 + 500); // 随机持续 0.5 - 1.5 秒
+                }
+
+                // 随机时间间隔触发下一个 Glitch（2-6秒之间）
+                setTimeout(triggerNightGlitch, Math.random() * 4000 + 2000);
+            } else {
+                // 如果不是夜晚模式，稍后再检查
+                setTimeout(triggerNightGlitch, 5000);
+            }
+        }
+
+        // 🔄 立即启动 Glitch 监听
+        triggerNightGlitch();
+
         // 实时更新时间
         function updateTime() {
             const now = new Date();
-            const timeString = now.toLocaleTimeString();
-            timeDisplay.innerHTML = timeString;
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][now.getDay()];
+
+            /// ✅ 正确应用字体
+            document.getElementById("timeDisplay").innerHTML = `
+                <span class="clock" style="font-family: 'DS-Digital', 'Orbitron', sans-serif;">
+                    ${hours}:${minutes}:${seconds}
+                </span>
+                <span class="date" style="font-family: 'DS-Digital', 'Orbitron', sans-serif;">
+                    ${year} | ${month} | ${day} | ${weekday}
+                </span>
+            `;
         }
 
+        // 每秒更新时间
         setInterval(updateTime, 1000);
         updateTime();
 
-        // 点击切换天气模式
-        modeToggle.addEventListener("click", function() {
-            if (!body.classList.contains("cloudy-mode")) {
-                body.classList.add("night-mode");
-                modeToggle.innerHTML = "🌥️ ";
-                setTimeout(() => {
-                    body.classList.remove("night-mode");
-                    body.classList.add("cloudy-mode");
-                }, 700);
+
+
+
+
+
+        // 🌅 根据时间自动切换模式
+        function autoSetMode() {
+            const hour = new Date().getHours();
+            const modeToggle = document.getElementById("modeToggle");
+            const body = document.body;
+
+            // 清除所有模式
+            body.classList.remove("dusk-mode", "night-mode");
+
+            if (hour >= 6 && hour < 18) {
+                // ☀️ 白天模式
+                modeToggle.innerHTML = "☀️";
+            } else if (hour >= 18 && hour < 21) {
+                // 🌅 黄昏模式
+                body.classList.add("dusk-mode");
+                modeToggle.innerHTML = "🌅";
             } else {
-                body.classList.remove("cloudy-mode");
-                modeToggle.innerHTML = "☀️ ";
+                // 🌙 夜晚模式（Tokyo Night）
+                body.classList.add("night-mode");
+                modeToggle.innerHTML = "🌙";
+            }
+        }
+
+        // ⏳ 页面加载时自动设定模式
+        autoSetMode();
+
+        // 🔄 监听按钮手动切换模式（晴天 → 黄昏 → 夜晚 → 晴天）
+        document.getElementById("modeToggle").addEventListener("click", function () {
+            const body = document.body;
+
+            if (!body.classList.contains("dusk-mode") && !body.classList.contains("night-mode")) {
+                body.classList.add("dusk-mode");
+                modeToggle.innerHTML = "🌅";
+            } else if (body.classList.contains("dusk-mode")) {
+                body.classList.remove("dusk-mode");
+                body.classList.add("night-mode");
+                modeToggle.innerHTML = "🌙";
+            } else {
+                body.classList.remove("night-mode");
+                modeToggle.innerHTML = "☀️";
             }
         });
+
     </script>
 </body>
 </html>
