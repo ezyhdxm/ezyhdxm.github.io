@@ -28,15 +28,16 @@ document.addEventListener("DOMContentLoaded", () => {
             const quotes = await response.json();
             console.log("Lyrics loaded:", quotes);
             
-            let randomIndex = Math.floor(Math.random() * quotes.lyrics.japanese.length);
+            let randomSong = Math.floor(Math.floor(Math.random() * quotes.song.length));
+            let randomIndex = Math.floor(Math.random() * quotes.song[randomSong].lyrics.japanese.length);
             // let randomQuote = quotes[randomIndex];
 
             quoteElement.style.opacity = "0";
             setTimeout(() => {
-                originalElement.innerHTML = quotes.lyrics.japanese[randomIndex];
-                songTitleElement.innerHTML = "— " + quotes.title;
-                translationElement.innerHTML = quotes.lyrics.chinese[randomIndex];
-                hiraganaElement.innerHTML = quotes.lyrics.hiragana[randomIndex];
+                originalElement.innerHTML = quotes.song[randomSong].lyrics.japanese[randomIndex];
+                songTitleElement.innerHTML = "— " + quotes.song[randomSong].title;
+                translationElement.innerHTML = quotes.song[randomSong].lyrics.chinese[randomIndex];
+                hiraganaElement.innerHTML = quotes.song[randomSong].lyrics.hiragana[randomIndex];
                 quoteElement.appendChild(originalElement);
                 quoteElement.appendChild(songTitleElement);
                 quoteElement.appendChild(translationElement);
