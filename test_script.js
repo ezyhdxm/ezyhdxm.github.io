@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 500);
 
         } catch (error) {
-            console.error("❌ Error loading lyrics.json:", error);
+            console.error("❌ Error loading lyrics_with_hiragana.json:", error);
             quoteElement.innerHTML = "⚠️ 加载歌词失败...";
         }
     }
