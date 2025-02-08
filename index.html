@@ -9,7 +9,7 @@
             @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400;1,700&display=swap');
         </style>
     </head>
-    <body class="is-preload">
+    <body class="is-preloaded">
 
 				<!-- Header -->
             <header id="header" class="site-header" role="banner">
@@ -32,7 +32,7 @@
                     <span></span>
                     Publications
                 </a>
-                <a href="other.html">
+                <a href="other_test.html" id="otherLink">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -40,20 +40,39 @@
                     Others
                 </a>
             </div>
-	    <script>
-            // 获取 "Others" 按钮
-            const otherLink = document.getElementById("otherLink");
 
-            // 监听点击事件
-            otherLink.addEventListener("click", function(event) {
+        <script>
+            // 页面跳转的概率配置
+            const pages = [
+                { url: "other.html", probability: 0.8 },    // 80% 概率跳转到 other.html
+                { url: "cyberpunk.html", probability: 0.2 }, // 20% 概率跳转到 cyberpunk.html
+               // { url: "secret.html", probability: 0.05 }    // 10% 概率跳转到 secret.html
+            ];
+
+            // 计算随机跳转的目标页面
+            function getRandomPage() {
+                let rand = Math.random(); // 生成 0~1 之间的随机数
+                let cumulativeProbability = 0;
+
+                for (let page of pages) {
+                    cumulativeProbability += page.probability;
+                    if (rand < cumulativeProbability) {
+                        return page.url;
+                    }
+                }
+
+                return pages[0].url; // 以防概率计算误差，默认返回第一个页面
+            }
+
+            // 监听点击 "Others" 按钮
+            document.getElementById("otherLink").addEventListener("click", function(event) {
                 event.preventDefault(); // 阻止默认跳转
-                document.body.classList.add("fade-out"); // 添加淡出效果
-                
+                document.body.classList.add("fade-out"); // 页面淡出动画
+
                 setTimeout(() => {
-                    window.location.href = "other.html"; // 500ms 后跳转
-                }, 500);
+                    window.location.href = getRandomPage(); // 随机跳转页面
+                }, 500); // 500ms 后跳转
             });
         </script>
-        
     </body>
 </html>

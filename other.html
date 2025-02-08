@@ -3,8 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <title>言葉</title>
     <style>
+        /* 页面淡入 */
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* 页面淡出 */
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* 赛博朋克 Glitch 效果 */
+        @keyframes glitch {
+            0% { text-shadow: 3px 0px 5px #ff00ff, -3px 0px 5px #00ffff; }
+            25% { text-shadow: -3px 2px 6px #ff00ff, 3px -2px 6px #00ffff; }
+            50% { text-shadow: 3px -3px 7px #ff00ff, -3px 3px 7px #00ffff; }
+            75% { text-shadow: -3px -3px 8px #ff00ff, 3px 3px 8px #00ffff; }
+            100% { text-shadow: 3px 0px 5px #ff00ff, -3px 0px 5px #00ffff; }
+        }
+
+        .glitch {
+            animation: glitch 0.3s infinite alternate;
+        }
+
         body {
             display: flex;
             justify-content: center;
@@ -72,7 +103,7 @@
         /* 🌥️ 阴天模式下的高亮（不使用阴影，改为变亮） */
         .cloudy-mode .container:hover {
             text-shadow: none;
-            color: #000; /* 变为纯黑，模拟“高亮” */
+            color: #000;
         }
 
         /* 🌑 夜晚模式下的阴影 */
@@ -110,15 +141,24 @@
             left: 20px;
             font-size: 1rem;
             color: #777;
+            cursor: pointer;
+            transition: text-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+
+        /* 鼠标悬停时的效果 */
+        .time-display:hover {
+            text-shadow: 3px 3px 10px rgba(100, 100, 100, 0.5);
+            color: #000;
         }
     </style>
 </head>
 <body class="fade-in">
+    
     <!-- 实时时间 -->
-    <div class="time-display" id="timeDisplay" href="index.html"></div>
+    <div class="time-display" id="timeDisplay">Loading time...</div>
 
     <!-- 天气模式切换按钮 -->
-    <button class="mode-toggle" id="modeToggle">☀️ 晴</button>
+    <button class="mode-toggle" id="modeToggle">☀️ </button>
 
     <!-- 诗句显示区域 -->
     <div class="container" id="quote">
@@ -165,19 +205,24 @@
             }, 500);
         });
 
-        // 切换天气模式（先变黑再变灰）
-        modeToggle.addEventListener("click", function() {
-            if (!body.classList.contains("cloudy-mode")) {
-                body.classList.add("night-mode");
-                modeToggle.innerHTML = "🌥️ 陰";
-                setTimeout(() => {
-                    body.classList.remove("night-mode");
-                    body.classList.add("cloudy-mode");
-                }, 700);
-            } else {
-                body.classList.remove("cloudy-mode");
-                modeToggle.innerHTML = "☀️ 晴";
+        // 点击时间时，淡出并返回 index.html
+        timeDisplay.addEventListener("click", function() {
+            event.preventDefault(); // 阻止默认跳转
+            let rand = Math.random();
+            if (rand < 0.2) {
+                timeDisplay.classList.add("glitch");
+                quoteElement.classList.add("glitch");
             }
+            
+            // 0.5s 后添加淡出效果
+            setTimeout(() => {
+                document.body.classList.add("fade-out");
+            }, 500);
+            
+            // 0.7s 后跳转回 index.html
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 1000);
         });
 
         // 实时更新时间
@@ -186,8 +231,24 @@
             const timeString = now.toLocaleTimeString();
             timeDisplay.innerHTML = timeString;
         }
+
         setInterval(updateTime, 1000);
         updateTime();
+
+        // 点击切换天气模式
+        modeToggle.addEventListener("click", function() {
+            if (!body.classList.contains("cloudy-mode")) {
+                body.classList.add("night-mode");
+                modeToggle.innerHTML = "🌥️ ";
+                setTimeout(() => {
+                    body.classList.remove("night-mode");
+                    body.classList.add("cloudy-mode");
+                }, 700);
+            } else {
+                body.classList.remove("cloudy-mode");
+                modeToggle.innerHTML = "☀️ ";
+            }
+        });
     </script>
 </body>
 </html>

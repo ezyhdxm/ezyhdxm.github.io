@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>言葉</title>
+    <style>
+        /* 页面淡入 */
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* 页面淡出 */
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* 赛博朋克 Glitch 效果 */
+        @keyframes glitch {
+            0% { text-shadow: 3px 0px 5px #ff00ff, -3px 0px 5px #00ffff; }
+            25% { text-shadow: -3px 2px 6px #ff00ff, 3px -2px 6px #00ffff; }
+            50% { text-shadow: 3px -3px 7px #ff00ff, -3px 3px 7px #00ffff; }
+            75% { text-shadow: -3px -3px 8px #ff00ff, 3px 3px 8px #00ffff; }
+            100% { text-shadow: 3px 0px 5px #ff00ff, -3px 0px 5px #00ffff; }
+        }
+
+        .glitch-text.animated {
+            animation: glitch 0.1s infinite alternate;
+        }
+
+        /* 黑屏渐变 */
+        .black-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.7s ease-in-out, visibility 0s linear 0.7s;
+            z-index: 9999;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            background-color: #0d0d0d;
+            color: #0ff;
+            font-family: "Noto Sans JP", "Hiragino Kaku Gothic Pro", "Meiryo", sans-serif;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .glitch-text{
+            display: inline-block;
+            position: relative;
+            transition: transform 0.1s ease-in-out;
+        }
+
+        .glitch-click {
+            animation: glitch 0.05s infinite alternate;
+        }
+
+        .poem {
+            font-size: 1.5rem;
+            margin-top: 30px;
+            transition: opacity 0.3s ease-in-out;
+            position: relative;
+        }
+
+        .poem:hover {
+            text-shadow: 3px 3px 15px rgba(0, 255, 255, 0.8);
+        }
+
+        .container {
+            max-width: 80%;
+            font-size: 1.5rem;
+            line-height: 1.8;
+            transition: opacity 0.5s ease-in-out;
+            position: relative;
+        }
+
+        .song-title {
+            font-size: 1rem;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* 时间样式 */
+        .time-display {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1rem;
+            color: #0ff;
+            cursor: pointer;
+            transition: text-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+
+        /* 鼠标悬停时的效果 */
+        .time-display:hover {
+            text-shadow: 3px 3px 10px rgba(0, 255, 255, 0.5);
+            color: #fff;
+        }
+    </style>
+</head>
+<body class="fade-in">
+
+    <!-- 画布背景 -->
+    <canvas id="matrixCanvas"></canvas>
+
+    <h1 class="glitch-text">サイバーパンク世界へようこそ</h1>
+    <p class="glitch-text">これは現実ではない。あなたは今、データの夢を見ている。</p>
+    <p class="glitch-text">ネットの彼方に、真実が待っている。</p>
+    <p class="glitch-text">ERROR: Data Corrupted...</p>
+
+    <p class="poem glitch-text" id="poem">
+        あまりにも馴染みのある言葉は詩的な味わいを失い...<br> 
+    </p>
+    
+    <!-- 黑屏元素 -->
+    <div class="black-screen" id="blackScreen"></div>
+
+    <!-- 实时时间 -->
+    <div class="time-display glitch-text" id="timeDisplay">Loading time...</div>
+
+    <script>
+        // 让页面的所有文字随机抖动
+        function addGlitchEffect() {
+            let elements = document.querySelectorAll(".glitch-text");
+
+            elements.forEach(element => {
+                let chance = Math.random(); // 生成 0~1 之间的随机数
+
+                if (chance < 0.7) { // 70% 概率添加 Glitch 效果
+                    element.classList.add("animated");
+                } else {
+                    element.classList.remove("animated");
+                }
+            });
+
+            // 让抖动的频率每 500ms 随机变化
+            setTimeout(addGlitchEffect, 500);
+        }
+
+        // 启动 Glitch 效果
+        addGlitchEffect();
+
+        const blackScreen = document.getElementById("blackScreen");
+
+        // 诗句 & ヨルシカ歌词
+        const lyrics = [
+            "さよならだけが人生だ<br>—「言って。」",
+            "だから僕は音楽を辞めた<br>—「だから僕は音楽を辞めた」",
+            "君の知らない物語<br>—「ノーチラス」",
+            "春が来るまであと何日？<br>—「春泥棒」",
+            "ただ風を待つ<br>—「風を待つ」",
+            "僕は今日も息をする<br>—「花に亡霊」",
+            "僕らは命に嫌われている<br>—「藍二乗」",
+            "もう二度と戻れないんだね<br>—「エルマ」",
+            "飛行機雲を見上げていた<br>—「ヒッチコック」",
+            "君がいないと本当に退屈だ<br>—「言って。」"
+        ];
+
+        const poemElement = document.getElementById("poem");
+
+        // 点击诗句时，随机切换歌词并添加 Glitch 效果
+        poemElement.addEventListener("click", function() {
+            let randomIndex = Math.floor(Math.random() * lyrics.length);
+            poemElement.innerHTML = lyrics[randomIndex]; // 替换诗句内容
+
+            // 添加更强的 Glitch 效果
+            poemElement.classList.add("glitch-click");
+
+            // 500ms 后移除 Glitch 效果
+            setTimeout(() => {
+                poemElement.classList.remove("glitch-click");
+            }, 500);
+        });
+
+        const canvas = document.getElementById("matrixCanvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const columns = Math.floor(canvas.width / 20);
+        const drops = Array(columns).fill(0);
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "#0f0";
+            ctx.font = "16px monospace";
+
+            drops.forEach((y, index) => {
+                const text = String.fromCharCode(0x30A0 + Math.random() * 96);
+                ctx.fillText(text, index * 20, y);
+                drops[index] = y > canvas.height || Math.random() > 0.975 ? 0 : y + 20;
+            });
+        }
+
+        setInterval(drawMatrix, 50);
+
+        // 时间动态变化 & 也加入随机 Glitch 效果
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            const timeDisplay = document.getElementById("timeDisplay");
+            timeDisplay.innerHTML = timeString;
+
+            let chance = Math.random();
+            if (chance < 0.5) { // 50% 概率触发 Glitch
+                timeDisplay.classList.add("animated");
+            } else {
+                timeDisplay.classList.remove("animated");
+            }
+        }
+
+        setInterval(updateTime, 1000); // 每秒更新时间
+        updateTime(); // 页面加载时立即执行
+
+        // 生成随机时间范围函数
+        function randomTime(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        document.getElementById("timeDisplay").addEventListener("click", function() {
+            document.body.classList.add("fade-out");
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 500);
+        });
+    </script>
+</body>
+</html>
