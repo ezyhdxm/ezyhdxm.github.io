@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>言葉</title>
-    <script src="script.js" defer></script>
+    <script src="test_script.js" defer></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
 
@@ -61,17 +61,34 @@
         }
 
         .container {
-            max-width: 80%;
+            max-width: 100%;
             font-size: 1.5rem;
             line-height: 1.8;
             transition: opacity 0.5s ease-in-out, text-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
             position: relative;
+            margin-bottom: 20px;
         }
 
-        .song-title {
+        .text {
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .original {
+            opacity: 1;
+        }
+
+        .song-title,
+        .translation {
             font-size: 1rem;
             color: #777;
             margin-top: 10px;
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0.5; /* Initially hidden */
+        }
+
+        .container:hover .song-title,
+        .container:hover .translation {
+            opacity: 1; /* Fade in on hover */
         }
 
         /* 鼠标悬停时显示翻译 */
@@ -81,6 +98,26 @@
             margin-top: 8px;
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
+        }
+
+
+        .hiragana {
+            font-size: 1.3rem;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.3s ease-in-out;
+            width: 100%;
+            white-space: nowrap; 
+        }
+
+        .container:hover .original {
+            opacity: 0;
+        }
+
+        .container:hover .hiragana {
+            opacity: 1;
         }
 
         .container:hover .translation {
@@ -214,17 +251,18 @@
 
         /* 主时间部分 */
         .time-display .clock {
-            font-size: 1.5rem;  /* 缩小时间字体 */
+            margin-top: 0.6rem; /* 下移一点点 */
+            font-size: 1.2rem;  /* 缩小时间字体 */
             letter-spacing: 3px; /* 让时间更紧凑 */
             display: block;
         }
 
         /* 日期部分 */
         .time-display .date {
-            font-size: 0.8rem;  /* 日期更小 */
-            letter-spacing: 3px; /* 与时间保持一致 */
+            font-size: 0.5rem;  /* 日期更小 */
+            letter-spacing: 2px; /* 与时间保持一致 */
             display: block;
-            margin-top: -5px;  /* 让时间和日期更紧密 */
+            margin-top: -3px;  /* 让时间和日期更紧密 */
         }
 
         /* 🌓 适配不同模式 */
@@ -285,8 +323,12 @@
 
     <!-- 诗句显示区域 -->
     <div class="container" id="quote">
-        あまりにも馴染みのある言葉は詩的な味わいを失い、<br>
-        むしろ読めないものの方が美しい。
+        <div class="text hiragana" id="hiragana"> あまりにもなじみのあることばはしてきなあじわいをうしない、<br> 
+            むしろよめないもののほうがうつくしい。 </div>
+        <div class="text original" id="original">
+            あまりにも馴染みのある言葉は詩的な味わいを失い、<br>
+            むしろ読めないものの方が美しい。
+        </div>
         <div class="song-title" id="song-title">— 初期表示</div>
         <div class="translation" id="translation">（悬停）</div>
     </div>
@@ -311,8 +353,9 @@
 
         // 获取元素
         const quoteElement = document.getElementById("quote");
-        const songTitleElement = document.getElementById("song-title");
-        const translationElement = document.getElementById("translation");
+        // const songTitleElement = document.getElementById("song-title");
+        // const translationElement = document.getElementById("translation");
+        // const hiraganaElement = document.getElementById("hiragana");
         const modeToggle = document.getElementById("modeToggle");
         const timeDisplay = document.getElementById("timeDisplay");
         const body = document.body;

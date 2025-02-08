@@ -2,8 +2,10 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("✅ Document loaded!");
 
     const quoteElement = document.getElementById("quote");
+    const originalElement = document.getElementById("original");
     const songTitleElement = document.getElementById("song-title");
     const translationElement = document.getElementById("translation");
+    const hiraganaElement = document.getElementById("hiragana");
     // const modeToggle = document.getElementById("modeToggle");
     // const timeDisplay = document.getElementById("timeDisplay");
     // const body = document.body;
@@ -16,8 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function getRandomQuote() {
         try {
-            console.log("Fetching lyrics.json...");
-            const response = await fetch('lyrics.json');
+            console.log("Fetching lyrics_with_hiragana.json...");
+            const response = await fetch('lyrics_with_hiragana.json');
 
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -25,17 +27,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const quotes = await response.json();
             console.log("Lyrics loaded:", quotes);
-
-            let randomIndex = Math.floor(Math.random() * quotes.length);
-            let randomQuote = quotes[randomIndex];
+            
+            let randomIndex = Math.floor(Math.random() * quotes.lyrics.japanese.length);
+            // let randomQuote = quotes[randomIndex];
 
             quoteElement.style.opacity = "0";
             setTimeout(() => {
-                quoteElement.innerHTML = randomQuote.lyrics;
-                songTitleElement.innerHTML = "— " + randomQuote.song;
-                translationElement.innerHTML = randomQuote.translation;
+                originalElement.innerHTML = quotes.lyrics.japanese[randomIndex];
+                songTitleElement.innerHTML = "— " + quotes.title;
+                translationElement.innerHTML = quotes.lyrics.chinese[randomIndex];
+                hiraganaElement.innerHTML = quotes.lyrics.hiragana[randomIndex];
+                quoteElement.appendChild(originalElement);
                 quoteElement.appendChild(songTitleElement);
                 quoteElement.appendChild(translationElement);
+                quoteElement.appendChild(hiraganaElement);
                 quoteElement.style.opacity = "1";
             }, 500);
 
