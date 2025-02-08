@@ -158,6 +158,23 @@
             opacity: 1;
         }
 
+        /* 📱 移动端点击切换 */
+        @media (max-width: 768px) {
+            .container:active .original {
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            .container:active .hiragana {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .container:active .translation {
+                opacity: 1;
+            }
+        }
+
         /* ☀️ 晴天模式 鼠标悬停时增加阴影 */
         .container:hover {
             text-shadow: 3px 3px 10px rgba(100, 100, 100, 0.5);
