@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>言葉</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            font-family: "Noto Sans JP", "Hiragino Kaku Gothic Pro", "Meiryo", sans-serif;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        .container {
+            max-width: 80%;
+            font-size: 1.5rem;
+            line-height: 1.8;
+            transition: opacity 0.5s ease-in-out, text-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
+            position: relative;
+        }
+
+        .song-title {
+            font-size: 1rem;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* 鼠标悬停时显示翻译 */
+        .translation {
+            font-size: 1rem;
+            color: #555;
+            margin-top: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .container:hover .translation {
+            opacity: 1;
+        }
+
+        /* ☀️ 晴天模式 鼠标悬停时增加阴影 */
+        .container:hover {
+            text-shadow: 3px 3px 10px rgba(100, 100, 100, 0.5);
+        }
+
+        /* 🌑 夜晚模式 */
+        .night-mode {
+            background-color: #111 !important;
+            color: #ddd;
+        }
+
+        /* 🌥️ 阴天模式 */
+        .cloudy-mode {
+            background-color: #bbb !important;
+            color: #222;
+        }
+
+        .cloudy-mode .song-title {
+            color: #444;
+        }
+
+        /* 🌥️ 阴天模式下的高亮（不使用阴影，改为变亮） */
+        .cloudy-mode .container:hover {
+            text-shadow: none;
+            color: #000; /* 变为纯黑，模拟“高亮” */
+        }
+
+        /* 🌑 夜晚模式下的阴影 */
+        .night-mode .container:hover {
+            text-shadow: 4px 4px 12px rgba(255, 255, 255, 0.4);
+        }
+
+        /* 天气切换按钮 */
+        .mode-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: 1px solid #777;
+            padding: 8px 20px;
+            font-size: 1.2rem;
+            color: #777;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s, border 0.3s;
+        }
+
+        .cloudy-mode .mode-toggle {
+            border: 1px solid #222;
+            color: #222;
+        }
+
+        .mode-toggle:hover {
+            background: rgba(100, 100, 100, 0.2);
+        }
+
+        /* 实时时间 */
+        .time-display {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1rem;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <!-- 实时时间 -->
+    <div class="time-display" id="timeDisplay"></div>
+
+    <!-- 天气模式切换按钮 -->
+    <button class="mode-toggle" id="modeToggle">☀️ 晴</button>
+
+    <!-- 诗句显示区域 -->
+    <div class="container" id="quote">
+        あまりにも馴染みのある言葉は詩的な味わいを失い、<br>
+        むしろ読めないものの方が美しい。
+        <div class="song-title" id="song-title">— 初期表示</div>
+        <div class="translation" id="translation">（悬停）</div>
+    </div>
+
+    <script>
+        // ヨルシカ的歌词及翻译
+        const quotes = [
+            { lyrics: "さよならだけが人生だ", song: "「言って。」", translation: "唯有离别才是人生。" },
+            { lyrics: "だから僕は音楽を辞めた", song: "「だから僕は音楽を辞めた」", translation: "所以我放弃了音乐。" },
+            { lyrics: "君の知らない物語", song: "「ノーチラス」", translation: "你所不知道的故事。" },
+            { lyrics: "春が来るまであと何日？", song: "「春泥棒」", translation: "距离春天到来还有多少天？" },
+            { lyrics: "ただ風を待つ", song: "「風を待つ」", translation: "只是等待风的到来。" },
+            { lyrics: "僕は今日も息をする", song: "「花に亡霊」", translation: "我今天依然呼吸着。" },
+            { lyrics: "僕らは命に嫌われている", song: "「藍二乗」", translation: "我们被生命所厌恶。" },
+            { lyrics: "もう二度と戻れないんだね", song: "「エルマ」", translation: "已经再也回不去了呢。" },
+            { lyrics: "飛行機雲を見上げていた", song: "「ヒッチコック」", translation: "仰望着飞机的尾迹云。" },
+            { lyrics: "君がいないと本当に退屈だ", song: "「言って。」", translation: "没有你真的很无聊。" }
+        ];
+
+        // 获取元素
+        const quoteElement = document.getElementById("quote");
+        const songTitleElement = document.getElementById("song-title");
+        const translationElement = document.getElementById("translation");
+        const modeToggle = document.getElementById("modeToggle");
+        const timeDisplay = document.getElementById("timeDisplay");
+        const body = document.body;
+
+        // 点击时随机更换歌词
+        quoteElement.addEventListener("click", function() {
+            let randomIndex = Math.floor(Math.random() * quotes.length);
+            quoteElement.style.opacity = "0";
+            setTimeout(() => {
+                quoteElement.innerHTML = quotes[randomIndex].lyrics;
+                songTitleElement.innerHTML = "— " + quotes[randomIndex].song;
+                translationElement.innerHTML = quotes[randomIndex].translation;
+                quoteElement.appendChild(songTitleElement);
+                quoteElement.appendChild(translationElement);
+                quoteElement.style.opacity = "1";
+            }, 500);
+        });
+
+        // 切换天气模式（先变黑再变灰）
+        modeToggle.addEventListener("click", function() {
+            if (!body.classList.contains("cloudy-mode")) {
+                body.classList.add("night-mode");
+                modeToggle.innerHTML = "🌥️ 陰";
+                setTimeout(() => {
+                    body.classList.remove("night-mode");
+                    body.classList.add("cloudy-mode");
+                }, 700);
+            } else {
+                body.classList.remove("cloudy-mode");
+                modeToggle.innerHTML = "☀️ 晴";
+            }
+        });
+
+        // 实时更新时间
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            timeDisplay.innerHTML = timeString;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>
