@@ -41,6 +41,21 @@
                 </a>
             </div>
     <body>
+
+	    <script>
+            // 获取 "Others" 按钮
+            const otherLink = document.getElementById("otherLink");
+
+            // 监听点击事件
+            otherLink.addEventListener("click", function(event) {
+                event.preventDefault(); // 阻止默认跳转
+                document.body.classList.add("fade-out"); // 添加淡出效果
+                
+                setTimeout(() => {
+                    window.location.href = "other.html"; // 500ms 后跳转
+                }, 500);
+            });
+        </script>
         
     </body>
 </html>
