@@ -16,7 +16,12 @@
 
         @font-face {
             font-family: 'DS-Digital';
-            src: url('https://assets.codepen.io/9632/DS-DIGI.TTF') format('truetype');
+            src: url('assets/fonts/DS-DIGI.TTF') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Noto Serif SC';
+            src: url('assets/fonts/NotoSerifSC-Light.ttf') format('truetype');
         }
 
         /* 页面淡入 */
@@ -128,12 +133,15 @@
 
         /* 鼠标悬停时显示翻译 */
         .translation {
-            font-size: 1rem;
+            font-family: 'Noto Serif SC', 'Source Han Serif', 'Songti SC', serif;
+            font-size: 0.9rem;
             color: #555;
             margin-top: 8px;
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
             text-align: center;
+            vertical-align: middle;
+            line-height: 1.5;
         }
 
 

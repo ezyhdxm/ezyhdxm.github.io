@@ -55,3 +55,46 @@ document.addEventListener("DOMContentLoaded", () => {
     // 点击时随机更换歌词
     quoteElement.addEventListener("click", getRandomQuote); // 点击切换歌词
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    let showText = 0;
+    const container = document.querySelector(".container");
+    // 📌 检测是否是手机端
+    function isMobile() {
+        return window.matchMedia("(max-width: 768px)").matches || /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
+    }
+
+    if (isMobile()) { 
+        console.log("📱 运行于手机端");
+
+        const quoteElement = document.getElementById("quote");
+        const originalElement = document.getElementById("original");
+        const songTitleElement = document.getElementById("song-title");
+        const translationElement = document.getElementById("translation");
+        const hiraganaElement = document.getElementById("hiragana");
+
+        // 📌 点击空白处：显示/隐藏 翻译+平假名
+        document.addEventListener("click", function (event) {
+            if (!container.contains(event.target)) {
+                // console.log("📱 点击空白处");
+                showText = 1-showText;
+                // console.log(showText);
+                hiraganaElement.style.opacity = showText;
+                translationElement.style.opacity = showText;
+                songTitleElement.style.opacity = 0.5+0.5*showText;
+                originalElement.style.opacity = 1-showText;
+            }
+        });
+
+        
+        // 📌 点击歌词：切换下一句
+        container.addEventListener("click", function (event) {
+            if (event.target.classList.contains("quote")) {
+                quoteElement.addEventListener("click", getRandomQuote);
+            }
+        });
+    } else {
+        console.log("🖥️ 运行于桌面端，不执行手机点击事件");
+    }
+});
