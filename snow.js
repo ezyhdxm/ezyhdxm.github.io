@@ -19,4 +19,3 @@ function createSnowflakes() {
 
 // 每200ms 生成一个雪花
 setInterval(createSnowflakes, 200);
-

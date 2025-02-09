@@ -84,7 +84,7 @@ indexModeToggle.addEventListener("click", function () {
 
 
 // 🌞 页面加载时默认进入白天模式
-document.body.classList.add("day-mode");
+document.body.classList.add("night-mode");
 startFallingLeaves(); // 启动落叶
 
 

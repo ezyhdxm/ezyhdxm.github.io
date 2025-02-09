@@ -116,3 +116,24 @@ function stopFlicker() {
 }
 
 
+// **不同灯光颜色**
+const lightColors = [
+    { bulb: "#FFEFD5", glow: "rgba(255, 230, 180, 0.9)" }, // 🌟 温暖黄光
+    { bulb: "#FFD700", glow: "rgba(255, 210, 100, 0.9)" }, // 🌟 金黄灯
+    { bulb: "#87CEFA", glow: "rgba(135, 206, 250, 0.9)" }, // 🌊 冷蓝光
+    { bulb: "#FF69B4", glow: "rgba(255, 105, 180, 0.8)" }  // 💖 霓虹粉
+];
+
+let currentLightIndex = 0;
+
+// **点击灯泡改变颜色**
+document.getElementById("lamp-bulb").addEventListener("click", function () {
+    currentLightIndex = (currentLightIndex + 1) % lightColors.length; // 切换颜色
+    let newColor = lightColors[currentLightIndex];
+
+    // **更改灯泡颜色**
+    document.getElementById("lamp-bulb").style.background = newColor.bulb;
+    
+    // **更改灯光颜色**
+    document.getElementById("lamp-light").style.background = `radial-gradient(circle, ${newColor.glow} 0%, transparent 100%)`;
+});
