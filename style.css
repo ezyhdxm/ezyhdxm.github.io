@@ -9,11 +9,12 @@
 /* 🎨 深色背景 + 柔和渐变 */
 body {
     background: linear-gradient(135deg, #1c1f26, #2a2d34); /* 深色渐变 */
-    color: #fff;
+    /* color: #fff; 
     text-align: center;
     overflow: hidden;
     position: relative;
-}
+    transition: background 1s ease-in-out, color 1s ease-in-out;*/
+} 
 
 /**
  * 🏠 Site header
@@ -82,13 +83,47 @@ body {
     letter-spacing: 4px;
     border-radius: 5px;
     box-shadow: 0 5px 15px rgba(212, 154, 137, 0.2);
+    backdrop-filter: blur(4px);
+    z-index: 10;
 }
 
 /* 💡 按钮 hover 效果 */
 #main > a:hover {
     background: #D49A89;
     color: #fff;
-    box-shadow: 0 5px 20px rgba(212, 154, 137, 0.6);
+    transform: scale(1.1) translateY(-3px);
+    box-shadow: 0 0 15px rgba(212, 154, 137, 0.6),
+                0 0 30px rgba(231, 158, 133, 0.6),
+                0 0 50px rgba(231, 158, 133, 0.4);
+    animation: neonGlow 1s infinite alternate;
+}
+
+/* 🌞 Day Mode Button Style */
+.day-mode #main > a {
+    position: relative;
+    display: inline-block;
+    padding: 15px 40px;
+    margin: 20px 0;
+    color: #8B5E3C; /* Warm brown text */
+    border: 2px solid #C8A17D; /* Soft gold border */
+    background: rgba(255, 240, 220, 0.3); /* Light and airy */
+    font-size: 24px;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: all 0.4s ease-in-out;
+    letter-spacing: 4px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(200, 160, 120, 0.2); /* Soft glow */
+    backdrop-filter: blur(4px); /* Subtle background blur */
+}
+
+/* 🌟 Hover Effect */
+.day-mode #main > a:hover {
+    background: rgba(255, 220, 180, 0.5); /* Warmer glow on hover */
+    color: #6D4428; /* Richer brown */
+    border-color: #D4B38A; /* Lighter gold */
+    box-shadow: 0 5px 20px rgba(220, 180, 140, 0.6); /* Enhanced depth */
     transform: scale(1.05) translateY(-3px);
 }
 
@@ -212,10 +247,6 @@ body {
     transition: opacity 0.5s ease-in-out, filter 0.5s ease-in-out;
 }
 
-/* 🌟 全局基础样式 */
-body {
-    transition: background 1s ease-in-out, color 1s ease-in-out;
-}
 
 /* 🌙 夜间模式（深色背景 + 吊灯） */
 body.night-mode {
@@ -224,10 +255,15 @@ body.night-mode {
 }
 
 /* ☀ 白天模式（秋天色调） */
+
+/*
 body.day-mode {
     background: linear-gradient(135deg, #f7d9aa, #e8a87c);
     color: #442b1b;
+    position: relative;
+    transition: background 2s ease-in-out, color 2s ease-in-out;
 }
+*/
 
 /* 🎨 模式切换按钮（默认样式） */
 /*#indexModeToggle {
@@ -241,6 +277,16 @@ body.day-mode {
     border: 1px solid transparent;
     transition: background 0.3s, color 0.3s, border 0.3s;
     z-index: 12;
+}*/
+
+#vanta-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1; /* 放在最底层 */
+    pointer-events: none; /* 确保不会影响鼠标点击 */
 }
 
 /* ☀ 白天模式按钮（柔和米色） */

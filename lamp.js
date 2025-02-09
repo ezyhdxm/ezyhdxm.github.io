@@ -137,3 +137,32 @@ document.getElementById("lamp-bulb").addEventListener("click", function () {
     // **更改灯光颜色**
     document.getElementById("lamp-light").style.background = `radial-gradient(circle, ${newColor.glow} 0%, transparent 100%)`;
 });
+
+
+document.body.classList.add("night-mode");
+enableNightBackground(); 
+//startFallingLeaves(); // 启动落叶
+
+
+
+// 🚀 让按钮的重影效果随机忽明忽暗
+function randomizeNeonEffect() {
+    if (!document.body.classList.contains("night-mode")) return;
+
+    document.querySelectorAll("#main > a").forEach(button => {
+        const shadow = button.querySelector("::before");
+        
+        // 随机透明度（0.2 - 1）
+        const randomOpacity = Math.random() * 0.8 + 0.2;
+
+        // 随机模糊（1px - 5px）
+        const randomBlur = Math.random() * 4 + 1;
+
+        // 应用样式变化
+        button.style.setProperty("--neon-opacity", randomOpacity);
+        button.style.setProperty("--neon-blur", `${randomBlur}px`);
+    });
+
+    // 随机间隔调用（0.5s - 2s 之间）
+    setTimeout(randomizeNeonEffect, Math.random() * 1500 + 500);
+}

@@ -1,7 +1,11 @@
 <!doctype html>
 <html>
     <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.clouds2.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"></script>
+        <script src="vanta.trunk.min.js"></script>
         <title>Hao's Homepage</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -10,9 +14,11 @@
             @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400;1,700&display=swap');
         </style>
     </head>
-    <script src="snow.js" defer></script>
+    <script src="background.js" defer></script>
     <script src="lamp.js" defer></script>
-    <script src="leaves.js" defer></script>
+    <script src="snow.js" defer></script>
+
+    <div id="vanta-background"></div>
     <body class="is-preloaded">
 
 				<!-- Header -->

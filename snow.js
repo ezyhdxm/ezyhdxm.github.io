@@ -1,21 +1,46 @@
-// 🌨️ 创建雪花动画
+let snowInterval; // Variable to store the setInterval ID
+
 function createSnowflakes() {
     const snowflake = document.createElement("div");
     snowflake.classList.add("snowflake");
     snowflake.innerHTML = "❄";
 
-    // 随机大小 & 位置
+    // Random size & position
     snowflake.style.left = Math.random() * window.innerWidth + "px";
-    snowflake.style.fontSize = Math.random() * 10 + 8 + "px"; 
-    snowflake.style.animationDuration = Math.random() * 5 + 3 + "s"; 
+    snowflake.style.fontSize = Math.random() * 8 + 8 + "px";
+    snowflake.style.animationDuration = Math.random() * 5 + 3 + "s";
 
     document.body.appendChild(snowflake);
 
-    // 5秒后删除
+    // Remove after animation completes
     setTimeout(() => {
-        snowflake.remove();
+        snowflake.style.opacity = "0"; // Fade out before removing
+        setTimeout(() => snowflake.remove(), 1000);
     }, 5000);
 }
 
-// 每200ms 生成一个雪花
-setInterval(createSnowflakes, 200);
+// **🌟 Start snowfall**
+function startSnowFall() {
+    if (!snowInterval) {
+        snowInterval = setInterval(createSnowflakes, 200);
+    }
+}
+
+// **❄️ Stop snowfall**
+function stopSnowFall() {
+    clearInterval(snowInterval);
+    snowInterval = null;
+
+    // Fade out existing snowflakes before removing them
+    document.querySelectorAll(".snowflake").forEach(snowflake => {
+        snowflake.style.transition = "opacity 3s ease-out";
+        snowflake.style.opacity = "0";
+        setTimeout(() => {
+            snowflake.style.opacity = "0"; // Fade out before removing
+            setTimeout(() => snowflake.remove(), 3000);
+        }, 6000);
+    });
+}
+
+// **Start snowfall on page load**
+//
