@@ -26,7 +26,9 @@ body {
     align-items: center;
     backdrop-filter: blur(10px);
     border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    z-index: 10; /* 确保在落叶前面 */
 }
+
 
 .site-title {
     font-size: 32px;
@@ -183,3 +185,164 @@ body {
     opacity: 1;
     background: radial-gradient(circle, rgba(255, 255, 180, 0.8) 0%, rgba(255, 255, 180, 0.4) 40%, transparent 100%);
 }
+
+/* 🌟 全局基础样式 */
+body {
+    transition: background 1s ease-in-out, color 1s ease-in-out;
+}
+
+/* 🌙 夜间模式（深色背景 + 吊灯） */
+body.night-mode {
+    background: linear-gradient(135deg, #1c1f26, #2a2d34);
+    color: #fff;
+}
+
+/* ☀ 白天模式（秋天色调） */
+body.day-mode {
+    background: linear-gradient(135deg, #f7d9aa, #e8a87c);
+    color: #442b1b;
+}
+
+/* 🎨 模式切换按钮（默认样式） */
+#modeToggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background 0.3s, color 0.3s, border 0.3s;
+}
+
+/* ☀ 白天模式按钮（柔和米色） */
+.day-mode #modeToggle {
+    background: rgba(255, 200, 150, 0.6);  /* 柔和暖色，稍微加深透明度 */
+    color: rgba(50, 50, 50, 0.9);          /* 文字颜色深一点，确保可读性 */
+    border-color: rgba(255, 165, 0, 0.4);
+}
+
+/* 🌙 夜晚模式按钮（淡橙色） */
+.night-mode #modeToggle {
+    background: rgba(255, 155, 80, 0.7);   /* 夜晚稍微深一点 */
+    color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 155, 80, 0.6);
+}
+
+/* 鼠标悬停时让背景更明显 */
+#modeToggle:hover {
+    background: rgba(255, 165, 80, 0.9);
+    color: white;
+}
+
+
+
+/* 🍂 确保落叶在最底层 */
+#falling-leaves {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1; /* 确保在最底层 */
+}
+
+/* 🍁 叶子样式 */
+.leaf {
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.7;
+    animation: fall linear infinite;
+    z-index: 1; /* 确保叶子不会覆盖主页标题 */
+}
+
+/* 🍂 叶子飘落动画（加入横向速度） */
+@keyframes fall {
+    0% {
+        transform: translateY(-5vh) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        transform: translateY(50vh) rotate(180deg);
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* 🍃 叶子左右飘动 */
+@keyframes sway {
+    0% {
+        transform: translateX(0px);
+    }
+    25% {
+        transform: translateX(10px);
+    }
+    50% {
+        transform: translateX(-10px);
+    }
+    75% {
+        transform: translateX(5px);
+    }
+    100% {
+        transform: translateX(-5px);
+    }
+}
+
+
+/* 🌙 仅夜晚模式下按钮会闪烁 + 轻微随机抖动 + 重影 */
+.night-mode #main > a {
+    animation: flicker 3s infinite alternate, randomShake 0.15s infinite alternate;
+    position: relative;
+}
+
+/* ✨ 柔和霓虹灯闪烁（增强亮度变化幅度） */
+@keyframes flicker {
+    0% {
+        text-shadow: 
+            0 0 5px rgba(255, 204, 0, 0.6), 
+            0 0 10px rgba(255, 204, 0, 0.4);
+        opacity: 1;
+    }
+    50% {
+        text-shadow: 
+            0 0 15px rgba(255, 204, 0, 1), 
+            0 0 30px rgba(255, 204, 0, 0.8);
+        opacity: 0.8;
+    }
+    100% {
+        text-shadow: 
+            0 0 5px rgba(255, 204, 0, 0.6), 
+            0 0 10px rgba(255, 204, 0, 0.4);
+        opacity: 1;
+    }
+}
+
+/* ⚡ 轻微随机抖动效果 */
+@keyframes randomShake {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(-0.5px, 0.5px); }
+    50% { transform: translate(0.5px, -0.5px); }
+    75% { transform: translate(-0.5px, -0.5px); }
+    100% { transform: translate(0.5px, 0.5px); }
+}
+
+/* 🌟 重影基础样式 */
+.night-mode #main > a::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    color: rgba(255, 204, 0, 0.3);
+    transform: translate(1px, 1px);
+    filter: blur(2px);
+    opacity: 0.5; /* 初始亮度 */
+    transition: opacity 0.5s ease-in-out, filter 0.5s ease-in-out;
+}
+

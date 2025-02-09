@@ -114,3 +114,5 @@ function stopFlicker() {
     lampLight.style.opacity = 0;
     lampBulb.style.boxShadow = "none";
 }
+
+
