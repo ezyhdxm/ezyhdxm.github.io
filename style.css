@@ -6,38 +6,39 @@
     box-sizing: border-box;
 }
 
-/* 🎨 背景改进：浅色 + 柔和渐变 */
+/* 🎨 深色背景 + 柔和渐变 */
 body {
-    background: linear-gradient(135deg, #f9f6f2, #efeae6); /* 柔和的米白色渐变 */
-    color: #333;
+    background: linear-gradient(135deg, #1c1f26, #2a2d34); /* 深色渐变 */
+    color: #fff;
     text-align: center;
     overflow: hidden;
+    position: relative;
 }
 
 /**
  * 🏠 Site header
  */
 .site-header {
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.1);
     min-height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(8px); /* 增加磨砂玻璃效果 */
-    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .site-title {
     font-size: 32px;
     font-weight: 600;
-    color: #444;
+    color: #fff;
     letter-spacing: -1px;
     text-decoration: none;
     transition: color 0.3s ease-in-out;
 }
 
 .site-title:hover {
-    color: #D49A89; /* 变为温和的蓝色 */
+    color: #D49A89; /* 变为温暖的橙色 */
 }
 
 /* 🌿 页面主区域 */
@@ -47,35 +48,55 @@ body {
     align-items: center;
     min-height: 100vh;
     flex-direction: column;
-    background: transparent;
 }
 
-/* 🌟 按钮设计：柔和浅色系 */
+/* 🌟 按钮设计：深色背景 + 霓虹效果 */
 #main > a {
     position: relative;
     display: inline-block;
     padding: 15px 40px;
     margin: 20px 0;
-    color: #D49A89; /* 莫兰迪橘 */
+    color: #D49A89;
     border: 2px solid #D49A89;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.1);
     font-size: 24px;
     text-decoration: none;
     text-transform: uppercase;
     overflow: hidden;
-    transition: 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
     letter-spacing: 4px;
     border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(212, 154, 137, 0.2);
 }
 
 /* 💡 按钮 hover 效果 */
 #main > a:hover {
     background: #D49A89;
     color: #fff;
-    box-shadow: 0 0 10px rgba(212, 154, 137, 0.4),
-                0 0 40px rgba(212, 154, 137, 0.3),
-                0 0 40px rgba(212, 154, 137, 0.2);
-    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(212, 154, 137, 0.6);
+    transform: scale(1.05) translateY(-3px);
+}
+
+/* 🌨️ 添加下雪动画 */
+.snowflake {
+    position: absolute;
+    top: -10px;
+    color: white;
+    font-size: 8px;
+    opacity: 0.8;
+    animation: snowfall linear infinite;
+}
+
+/* ⛄ 让雪花缓慢飘落 */
+@keyframes snowfall {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
 }
 
 /* 🌟 页面渐隐动画 */
@@ -105,4 +126,60 @@ body {
         font-size: 20px;
         padding: 12px 30px;
     }
+}
+
+/* 🎇 吊灯容器（右上角） */
+#lamp-container {
+    position: absolute;
+    top: 0;
+    right: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: grab;
+    user-select: none;
+    transform-origin: top center;
+}
+
+/* 🪢 灯绳 */
+#lamp-string {
+    width: 4px;
+    height: 100px;
+    background-color: #666;
+}
+
+/* 💡 灯泡 */
+#lamp-bulb {
+    width: 40px;
+    height: 40px;
+    background-color: #444;
+    border-radius: 50%;
+    position: relative;
+    transition: background-color 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+}
+
+/* 🔦 灯光效果 */
+#lamp-light {
+    position: absolute;
+    top: 50px;
+    right: -50px;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(255, 255, 180, 0.0) 0%, rgba(255, 255, 180, 0.0) 40%, transparent 100%);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, background 0.5s ease-in-out;
+    pointer-events: none;
+}
+
+/* 🌟 亮灯时的灯泡 */
+.lit #lamp-bulb {
+    background-color: #ffcc00;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.8);
+}
+
+/* 💡 亮灯时的灯光 */
+.lit #lamp-light {
+    opacity: 1;
+    background: radial-gradient(circle, rgba(255, 255, 180, 0.8) 0%, rgba(255, 255, 180, 0.4) 40%, transparent 100%);
 }
