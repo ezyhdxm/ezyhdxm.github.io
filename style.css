@@ -204,7 +204,7 @@ body.day-mode {
 }
 
 /* 🎨 模式切换按钮（默认样式） */
-#modeToggle {
+#indexModeToggle {
     position: fixed;
     top: 20px;
     left: 20px;
@@ -217,21 +217,21 @@ body.day-mode {
 }
 
 /* ☀ 白天模式按钮（柔和米色） */
-.day-mode #modeToggle {
+.day-mode #indexModeToggle {
     background: rgba(255, 200, 150, 0.6);  /* 柔和暖色，稍微加深透明度 */
     color: rgba(50, 50, 50, 0.9);          /* 文字颜色深一点，确保可读性 */
     border-color: rgba(255, 165, 0, 0.4);
 }
 
 /* 🌙 夜晚模式按钮（淡橙色） */
-.night-mode #modeToggle {
+.night-mode #indexModeToggle {
     background: rgba(255, 155, 80, 0.7);   /* 夜晚稍微深一点 */
     color: rgba(255, 255, 255, 0.9);
     border-color: rgba(255, 155, 80, 0.6);
 }
 
 /* 鼠标悬停时让背景更明显 */
-#modeToggle:hover {
+#indexModeToggle:hover {
     background: rgba(255, 165, 80, 0.9);
     color: white;
 }

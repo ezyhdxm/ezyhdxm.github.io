@@ -1,5 +1,5 @@
 // 🎨 模式切换逻辑
-const modeToggle = document.getElementById("modeToggle");
+const indexModeToggle = document.getElementById("indexModeToggle");
 let isDayMode = true;
 
 
@@ -61,20 +61,20 @@ function stopFallingLeaves() {
 }
 
 // 🚀 切换白天/夜晚模式
-modeToggle.addEventListener("click", function () {
+indexModeToggle.addEventListener("click", function () {
     isDayMode = !isDayMode;
 
     if (isDayMode) {
         document.body.classList.remove("night-mode");
         document.body.classList.add("day-mode");
-        modeToggle.textContent = " ";
+        indexModeToggle.textContent = " ";
 
         // stopSnowfall();
         startFallingLeaves();
     } else {
         document.body.classList.remove("day-mode");
         document.body.classList.add("night-mode");
-        modeToggle.textContent = " ";
+        indexModeToggle.textContent = " ";
 
         stopFallingLeaves();
         randomizeNeonEffect(); 
