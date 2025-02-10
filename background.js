@@ -1,8 +1,8 @@
 let vantaEffect = null;
 
 function enableDayBackground() {
-    const skyColors = [0x5c3c61, 0xf7d9aa, 0xf7d9aa, 0xb0e0e6, 0x5ca6ca];
-    const cloudColors = [0xd49a89, 0xd49a89, 0xd49a89, 0x5e566b, 0x334d80];
+    const skyColors = [0xf7d9aa, 0xb0e0e6, 0x5ca6ca];
+    const cloudColors = [0xd49a89, 0x5e566b, 0x334d80];
     let randomIndex = Math.floor(Math.random() * cloudColors.length);
     let newCloudColor = cloudColors[randomIndex];
     let newSkyColor = skyColors[randomIndex];
@@ -19,7 +19,7 @@ function enableDayBackground() {
             backgroundColor: 0xf7d9aa, // Initial warm background color
             skyColor: newSkyColor, //0xf7d9aa, // Initial sky color
             cloudColor: newCloudColor, // Cloud color remains unchanged
-            speed: 0.6,
+            speed: 1,
             texturePath: "./gallery/noise.png"
         });
     }

@@ -12,9 +12,9 @@ let lastMouseX = 0;
 let angle = 0; // 角度
 let angularVelocity = 0; // 角速度
 let angularAcceleration = 0; // 角加速度
-const gravity = 0.05; // 重力系数（影响摆动速度）
+const gravity = 0.5; // 重力系数（影响摆动速度）
 const damping = 0.995; // 阻尼系数（影响能量衰减）
-const angleThreshold = 0.1; // 角度阈值（当角度小于此值时停止）
+const angleThreshold = 0.005; // 角度阈值（当角度小于此值时停止）
 let animationFrame; // 记录动画帧
 
 // 🖱️ 监听拖拽灯泡事件
@@ -35,7 +35,7 @@ function onDrag(event) {
     let clientX = event.touches ? event.touches[0].clientX : event.clientX;
     let deltaX = clientX - startX;
 
-    angle = Math.max(-45, Math.min(45, deltaX * 0.5)); // Limit to -45° to 45°
+    angle = Math.max(-60, Math.min(60, deltaX * 0.5)); // Limit to -45° to 45°
     lampContainer.style.transform = `rotate(${angle}deg)`;
 
     // Calculate velocity for natural motion
@@ -95,7 +95,7 @@ function startSwing(callback) {
         angle += angularVelocity;
 
         // **🌟 关键改进：当角度足够小，直接停止**
-        if (Math.abs(angle) < angleThreshold && Math.abs(angularVelocity) < 0.005) {
+        if (Math.abs(angle) < angleThreshold && Math.abs(angularVelocity) < angleThreshold) {
             lampContainer.style.transform = `rotate(0deg)`;
             isSwinging = false; // Mark as finished
             if (callback) callback();
@@ -103,12 +103,12 @@ function startSwing(callback) {
         }
 
         // **保持角度范围**
-        if (angle > 45) {
-            angle = 45;
+        if (angle > 60) {
+            angle = 60;
             angularVelocity *= -0.7; // 反向摆动
         }
-        if (angle < -45) {
-            angle = -45;
+        if (angle < -60) {
+            angle = -60;
             angularVelocity *= -0.7;
         }
 
@@ -143,7 +143,7 @@ function startFlicker() {
     flickerInterval = setInterval(() => {
         if (Math.random() > 0.7) {
             lampLight.style.opacity = Math.random() * 0.8 + 0.2;
-            lampBulb.style.boxShadow = `0 0 ${Math.random() * 15 + 5}px rgba(255, 204, 0, 0.8)`;
+            lampBulb.style.boxShadow = `0 0 ${Math.random() * 20 + 5}px rgba(255, 204, 0, 0.8)`;
         }
     }, 400);
 }

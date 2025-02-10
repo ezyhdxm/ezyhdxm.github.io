@@ -90,7 +90,7 @@ html, body {
     letter-spacing: 4px;
     border-radius: 5px;
     box-shadow: 0 5px 15px rgba(212, 154, 137, 0.2);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(3px);
     z-index: 10;
 }
 
