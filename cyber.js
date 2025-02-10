@@ -2,6 +2,10 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("✅ Document loaded!");
 
     const poemElement = document.getElementById("poem");
+    const originalElement = document.getElementById("original");
+    const songTitleElement = document.getElementById("song-title");
+    const translationElement = document.getElementById("translation");
+    const hiraganaElement = document.getElementById("hiragana");
 
     if (!poemElement) {
         console.error("❌ Element not found: Make sure #poem exists in HTML.");
@@ -11,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     async function getRandomQuote() {
         try {
             console.log("Fetching lyrics.json...");
-            const response = await fetch('lyrics.json');
+            const response = await fetch('assets/lyrics/cyber.json');
 
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -20,12 +24,20 @@ document.addEventListener("DOMContentLoaded", () => {
             const quotes = await response.json();
             console.log("Lyrics loaded:", quotes);
 
-            let randomIndex = Math.floor(Math.random() * quotes.length);
-            let randomQuote = quotes[randomIndex];
-
+            
+            let randomSong = Math.floor(Math.floor(Math.random() * quotes.song.length));
+            let randomIndex = Math.floor(Math.random() * quotes.song[randomSong].lyrics.japanese.length);
+            
             poemElement.style.opacity = "0";
             setTimeout(() => {
-                poemElement.innerHTML = `${randomQuote.lyrics}<br>— ${randomQuote.song}`;
+                originalElement.innerHTML = quotes.song[randomSong].lyrics.japanese[randomIndex];
+                songTitleElement.innerHTML = "— " + quotes.song[randomSong].title;
+                translationElement.innerHTML = quotes.song[randomSong].lyrics.chinese[randomIndex];
+                hiraganaElement.innerHTML = quotes.song[randomSong].lyrics.hiragana[randomIndex];
+                poemElement.appendChild(hiraganaElement);
+                poemElement.appendChild(originalElement);
+                poemElement.appendChild(songTitleElement);
+                poemElement.appendChild(translationElement);
                 poemElement.style.opacity = "1";
             }, 200);
 

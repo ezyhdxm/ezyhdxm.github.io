@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     async function getRandomQuote() {
         try {
             console.log("Fetching lyrics_with_hiragana.json...");
-            const response = await fetch('lyrics_with_hiragana.json');
+            const response = await fetch('assets/lyrics/lyrics_with_hiragana.json');
 
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);

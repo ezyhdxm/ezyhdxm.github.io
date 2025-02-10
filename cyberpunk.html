@@ -39,6 +39,20 @@
             100% { text-shadow: 3px 0px 5px #ff00ff, -3px 0px 5px #00ffff; }
         }
 
+        .hiragana {
+            font-size: 1.3rem;
+            opacity: 0.6;
+            /*white-space: nowrap; */
+            text-align: center; /* 文字居中 */
+        }
+        .original {
+            font-size: 1.5rem;
+            opacity: 1;
+            white-space: normal;
+            /*white-space: nowrap; */
+            text-align: center; /* 文字居中 */
+        }
+
         .general-text {
             font-family: "Noto Sans JP", monospace;
             font-size: 20px;
@@ -181,6 +195,17 @@
             margin-top: 10px;
         }
 
+        .translation {
+            font-family: 'Noto Serif SC', 'Source Han Serif', 'Songti SC', serif;
+            font-size: 1.1rem;
+            color: #555;
+            margin-top: 8px;
+            opacity: 0.7;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 1.5;
+        }
+
         /* 时间样式 */
         .time-display {
             font-family: "3270 Nerd Font", monospace;
@@ -215,9 +240,14 @@
     <p class="commandline-text glitch-text">root@localhost:~# rm -rf /</p>
     </div>
 
-    <p class="poem glitch-text" id="poem">
-        あまりにも馴染みのある言葉は詩的な味わいを失い...<br> 
-    </p>
+    <div class="poem glitch-text" id="poem">
+        <div class="text hiragana" id="hiragana"> </div>
+        <div class="text original" id="original">
+        あまりにも馴染みのある言葉は詩的な味わいを失い...
+        </div>
+        <div class="song-title" id="song-title"></div>
+        <div class="translation" id="translation"></div>
+    </div>
     
     <!-- 黑屏元素 -->
     <div class="black-screen" id="blackScreen"></div>
