@@ -18,41 +18,73 @@ const angleThreshold = 0.1; // 角度阈值（当角度小于此值时停止）
 let animationFrame; // 记录动画帧
 
 // 🖱️ 监听拖拽灯泡事件
-lampBulb.addEventListener("mousedown", function (event) {
+function startDrag(event) {
     isDragging = true;
-    startX = event.clientX;
-    lastMouseX = event.clientX;
+    startX = event.touches ? event.touches[0].clientX : event.clientX;
+    lastMouseX = startX;
     angularVelocity = 0;
 
-    document.addEventListener("mousemove", onDrag);
-    document.addEventListener("mouseup", onRelease);
-});
+    document.addEventListener(event.touches ? "touchmove" : "mousemove", onDrag);
+    document.addEventListener(event.touches ? "touchend" : "mouseup", onRelease);
+}
 
-// 🎯 拖拽灯泡时
+// 🎯 **Dragging to Rotate the Lamp**
 function onDrag(event) {
     if (!isDragging) return;
 
-    let deltaX = event.clientX - startX;
-    angle = Math.max(-45, Math.min(45, deltaX * 0.5)); // 限制角度范围 -45° ~ 45°
+    let clientX = event.touches ? event.touches[0].clientX : event.clientX;
+    let deltaX = clientX - startX;
+
+    angle = Math.max(-45, Math.min(45, deltaX * 0.5)); // Limit to -45° to 45°
     lampContainer.style.transform = `rotate(${angle}deg)`;
 
-    // 计算速度（用于松手后的惯性）
-    angularVelocity = (event.clientX - lastMouseX) * 0.05;
-    lastMouseX = event.clientX;
+    // Calculate velocity for natural motion
+    angularVelocity = (clientX - lastMouseX) * 0.05;
+    lastMouseX = clientX;
 }
 
-// ✋ 释放灯泡后，它会自然摆动
-function onRelease() {
+// ✋ **Release the Lamp to Swing Naturally**
+function onRelease(event) {
     isDragging = false;
-    document.removeEventListener("mousemove", onDrag);
-    document.removeEventListener("mouseup", onRelease);
+    document.removeEventListener(event.touches ? "touchmove" : "mousemove", onDrag);
+    document.removeEventListener(event.touches ? "touchend" : "mouseup", onRelease);
 
     cancelAnimationFrame(animationFrame);
     startSwing();
 }
 
+let isSwinging = false;
+
+function startLampShake() {
+    clearInterval(shakeInterval);
+    function sway() {
+        let randomAngle = (Math.random() - 0.5) * 15; // Random angle between -7.5° to 7.5°
+        let duration = Math.random() * 1.5 + 1; // Random duration between 1s - 2.5s
+
+        gsap.to("#lamp-container", {
+            rotation: randomAngle,
+            duration: duration,
+            ease: "sine.inOut",
+            yoyo: true,
+            onComplete: () => {
+                if (Math.random() > 0.7 && !isSwinging) { // Randomly trigger swinging
+                    angle = randomAngle;
+                    isSwinging = true;
+                    startSwing(); // 🌟 Call startSwing() after random tilt
+                } else {
+                    sway(); // Continue shaking if no swing is triggered
+                }
+            }
+        });
+    }
+    sway(); // Start the first movement
+}
+
+
+let isShakingQueued = false;
 // 🏗️ 物理摆动（基于真实钟摆公式 + 角度阈值）
-function startSwing() {
+function startSwing(callback) {
+    isSwinging = true;
     function swing() {
         // 计算角加速度（基于钟摆公式：a = -sin(θ) * 重力）
         angularAcceleration = (-gravity * Math.sin(angle * (Math.PI / 180)));
@@ -65,6 +97,8 @@ function startSwing() {
         // **🌟 关键改进：当角度足够小，直接停止**
         if (Math.abs(angle) < angleThreshold && Math.abs(angularVelocity) < 0.005) {
             lampContainer.style.transform = `rotate(0deg)`;
+            isSwinging = false; // Mark as finished
+            if (callback) callback();
             return; // 停止动画
         }
 
@@ -84,6 +118,12 @@ function startSwing() {
 
     swing();
 }
+
+// 🖱️ **Enable Dragging (Desktop)**
+lampBulb.addEventListener("mousedown", startDrag);
+
+// 📱 **Enable Touch (Mobile)**
+lampBulb.addEventListener("touchstart", startDrag, { passive: true });
 
 // 💡 双击灯泡可以开关灯
 lampBulb.addEventListener("dblclick", function () {

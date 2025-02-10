@@ -20,10 +20,17 @@ body {
  * 🏠 Site header
  */
 
+html, body {
+    overscroll-behavior: none;
+    touch-action: manipulation;
+}
+
 .site-header {
     position: relative;
+    width: 100%;
     /*background: rgba(30, 30, 30, 0.8); /* 半透明背景 */
     background: rgba(255, 255, 255, 0.2);
+    overflow-x: hidden; 
     min-height: 60px;
     display: flex;
     justify-content: center;
@@ -111,21 +118,21 @@ body {
     text-decoration: none;
     text-transform: uppercase;
     overflow: hidden;
-    transition: all 0.4s ease-in-out;
     letter-spacing: 4px;
     border-radius: 8px;
+    opacity: 0;
     box-shadow: 0 5px 15px rgba(200, 160, 120, 0.2); /* Soft glow */
-    backdrop-filter: blur(4px); /* Subtle background blur */
+    /* backdrop-filter: blur(4px); /* Subtle background blur */
 }
 
 /* 🌟 Hover Effect */
-.day-mode #main > a:hover {
+/* .day-mode #main > a:hover {
     background: rgba(255, 220, 180, 0.5); /* Warmer glow on hover */
-    color: #6D4428; /* Richer brown */
-    border-color: #D4B38A; /* Lighter gold */
-    box-shadow: 0 5px 20px rgba(220, 180, 140, 0.6); /* Enhanced depth */
-    transform: scale(1.05) translateY(-3px);
-}
+    /*color: #6D4428; /* Richer brown */
+    /*border-color: #D4B38A; /* Lighter gold */
+    /*box-shadow: 0 5px 20px rgba(220, 180, 140, 0.6); /* Enhanced depth */
+    /*transform: scale(1.05) translateY(-3px);
+}*/
 
 /* 🌨️ 添加下雪动画 */
 .snowflake {
