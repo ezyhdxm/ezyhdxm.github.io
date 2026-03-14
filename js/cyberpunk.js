@@ -103,7 +103,7 @@ function pickSong() {
 function startBroadcast() {
     const title = pickSong();
     bgVideo.src = "https://www.youtube.com/embed/" + cyberVideos[title]
-        + "?autoplay=1&rel=0&controls=0&showinfo=0&modestbranding=1&loop=1&playlist=" + cyberVideos[title];
+        + "?autoplay=1&mute=1&playsinline=1&rel=0&controls=0&showinfo=0&modestbranding=1&loop=1&playlist=" + cyberVideos[title];
     videoBg.classList.add("active");
     document.body.classList.add("broadcasting");
     broadcastBtn.textContent = "■ " + title;

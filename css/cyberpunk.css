@@ -62,6 +62,8 @@ body {
     user-select: none;
     transition: background-color 0.5s, color 0.5s;
     gap: 16px;
+    position: relative;
+    z-index: 2;
 }
 
 canvas {
@@ -70,7 +72,7 @@ canvas {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: 1;
 }
 
 /* --- Heading --- */
@@ -269,11 +271,13 @@ h1.general-text {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -2;
+    z-index: 0;
     overflow: hidden;
     opacity: 0;
     transition: opacity 1.5s ease;
     background: #000;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
 }
 
 .video-bg.active {
@@ -429,4 +433,5 @@ body.broadcasting .crt-overlay {
     .original { font-size: 1.2rem; }
     .hiragana { font-size: 1rem; }
     .broadcast-btn { bottom: 12px; right: 12px; font-size: 0.5rem; padding: 8px 14px; }
+    .video-bg iframe { width: 300vw; height: 300vh; }
 }
