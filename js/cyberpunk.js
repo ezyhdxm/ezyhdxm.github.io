@@ -106,7 +106,7 @@ function startBroadcast() {
         + "?autoplay=1&mute=1&playsinline=1&rel=0&controls=0&showinfo=0&modestbranding=1&loop=1&playlist=" + cyberVideos[title];
     videoBg.classList.add("active");
     document.body.classList.add("broadcasting");
-    broadcastBtn.textContent = "■ " + title;
+    broadcastBtn.textContent = "■\uFE0E " + title;
     broadcastBtn.classList.add("on");
     broadcasting = true;
     window.currentBroadcastSong = title;
@@ -117,7 +117,7 @@ function stopBroadcast() {
     videoBg.classList.remove("active");
     document.body.classList.remove("broadcasting");
     bgVideo.src = "";
-    broadcastBtn.textContent = "▶ Broadcast";
+    broadcastBtn.textContent = "▶\uFE0E Broadcast";
     broadcastBtn.classList.remove("on");
     broadcasting = false;
     window.currentBroadcastSong = null;

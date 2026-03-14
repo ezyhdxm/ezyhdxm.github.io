@@ -432,6 +432,20 @@ body.broadcasting .crt-overlay {
     .poem { font-size: 1.2rem; }
     .original { font-size: 1.2rem; }
     .hiragana { font-size: 1rem; }
-    .broadcast-btn { bottom: 12px; right: 12px; font-size: 0.5rem; padding: 8px 14px; }
+    .broadcast-btn {
+        bottom: 16px;
+        right: 16px;
+        font-size: 0.55rem;
+        padding: 10px 16px;
+        letter-spacing: 2px;
+        border-color: rgba(0, 255, 255, 0.35);
+        box-shadow: 0 0 12px rgba(0, 255, 255, 0.1), inset 0 0 8px rgba(0, 255, 255, 0.05);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+    .broadcast-btn.on {
+        border-color: rgba(255, 45, 149, 0.5);
+        box-shadow: 0 0 14px rgba(255, 45, 149, 0.15), inset 0 0 8px rgba(255, 45, 149, 0.05);
+    }
     .video-bg iframe { width: 300vw; height: 300vh; }
 }
