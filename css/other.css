@@ -1,0 +1,657 @@
+@font-face {
+    font-family: 'DS-Digital';
+    src: url('../assets/fonts/DS-DIGI.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Noto Serif SC';
+    src: url('../assets/fonts/NotoSerifSC-Light.ttf') format('truetype');
+}
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(175deg, #F0EBE1, #E8E0D4, #F2EDE5);
+    color: #2C2420;
+    font-family: "Noto Serif JP", "Shippori Mincho", "Hiragino Mincho ProN", serif;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.8s ease, color 0.8s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    pointer-events: none;
+    transition: border-color 0.8s ease, width 0.8s ease, height 0.8s ease;
+}
+
+/* --- Transitions --- */
+
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 0.8s ease-in-out forwards;
+}
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes glitch {
+    0% { text-shadow: 3px 0px 5px #ff00ff, -3px 0px 5px #00ffff; }
+    25% { text-shadow: -3px 2px 6px #ff00ff, 3px -2px 6px #00ffff; }
+    50% { text-shadow: 3px -3px 7px #ff00ff, -3px 3px 7px #00ffff; }
+    75% { text-shadow: -3px -3px 8px #ff00ff, 3px 3px 8px #00ffff; }
+    100% { text-shadow: 3px 0px 5px #ff00ff, -3px 0px 5px #00ffff; }
+}
+
+.glitch {
+    animation: glitch 0.3s infinite alternate;
+}
+
+/* --- Lyrics container --- */
+
+.container {
+    max-width: 80%;
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 2.2;
+    letter-spacing: 2px;
+    transition: opacity 0.5s ease-in-out, text-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.text {
+    transition: opacity 0.4s ease-in-out;
+}
+
+.original {
+    opacity: 1;
+}
+
+.song-title,
+.translation {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: #999;
+    margin-top: 12px;
+    transition: opacity 0.4s ease-in-out;
+    opacity: 0.4;
+    letter-spacing: 1px;
+}
+
+.container:hover .song-title,
+.container:hover .translation {
+    opacity: 1;
+}
+
+.translation {
+    font-family: 'Noto Serif SC', 'Source Han Serif', 'Songti SC', serif;
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 8px;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+    text-align: center;
+    line-height: 1.8;
+}
+
+.hiragana {
+    font-size: 1.3rem;
+    font-weight: 200;
+    opacity: 0;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.4s ease-in-out;
+    width: 90%;
+    white-space: normal;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+.container::after {
+    content: "———";
+    display: block;
+    margin-top: 18px;
+    font-size: 0.6rem;
+    letter-spacing: 8px;
+    color: rgba(0, 0, 0, 0.1);
+    transition: color 0.8s ease;
+}
+
+.container:hover .original { opacity: 0; }
+.container:hover .hiragana { opacity: 1; }
+.container:hover .translation { opacity: 1; }
+
+.container:hover {
+    text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* --- Mode toggle --- */
+
+.mode-toggle {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: none;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    width: 44px;
+    height: 44px;
+    font-family: "Shippori Mincho", "Noto Serif JP", serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #8A7D72;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.mode-toggle:hover {
+    border-color: rgba(0, 0, 0, 0.25);
+    color: #3A3028;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.04);
+}
+
+/* --- Time display --- */
+
+.time-display {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    font-family: 'DS-Digital', monospace;
+    text-align: center;
+    cursor: pointer;
+    transition: text-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
+    color: #8A7D72;
+}
+
+.time-display .clock {
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    display: block;
+    margin-top: 0.4rem;
+}
+
+.time-display .date {
+    font-size: 0.45rem;
+    letter-spacing: 2px;
+    display: block;
+    margin-top: -2px;
+}
+
+.time-display:hover {
+    color: #3A3028;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Playlist --- */
+
+.playlist-toggle {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    background: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    width: 36px;
+    height: 36px;
+    font-family: "Shippori Mincho", serif;
+    font-size: 0.85rem;
+    color: #8A7D72;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.playlist-toggle:hover {
+    border-color: rgba(0, 0, 0, 0.25);
+    color: #3A3028;
+}
+
+.playlist-panel {
+    position: absolute;
+    bottom: 70px;
+    left: 24px;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s ease, opacity 0.4s ease;
+    z-index: 10;
+}
+
+.playlist-panel.open {
+    max-height: 400px;
+    opacity: 1;
+}
+
+.playlist-panel ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.playlist-panel li {
+    font-family: "Shippori Mincho", "Noto Serif JP", serif;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    padding: 5px 0;
+    color: #8A7D72;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+}
+
+.playlist-panel li:hover {
+    color: #3A3028;
+}
+
+.playlist-panel li.active {
+    color: #3A3028;
+}
+
+.playlist-panel li.active::before {
+    content: "▸ ";
+    font-size: 0.5rem;
+    vertical-align: middle;
+}
+
+/* --- TV --- */
+
+/* =============================================
+   Pomodoro
+   ============================================= */
+
+.pomo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 6px;
+    opacity: 0.5;
+    transition: opacity 0.4s ease;
+    position: relative;
+    z-index: 101;
+}
+
+.pomo:hover { opacity: 1; }
+
+.pomo-time {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    color: #7A6E60;
+    min-width: 3em;
+    text-align: center;
+    transition: color 0.8s ease;
+}
+
+.pomo-time.break { color: #8BA58E; }
+
+.pomo-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: #7A6E60;
+    padding: 6px;
+    line-height: 1;
+    opacity: 0.6;
+    transition: opacity 0.3s ease, color 0.8s ease;
+}
+
+.pomo-btn:hover { opacity: 1; }
+
+.tv {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+.tv-body {
+    width: 240px;
+    min-width: 120px;
+    max-width: 80vw;
+    background: #D8D0C4;
+    border-radius: 6px;
+    padding: 10px 10px 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    transition: background 0.8s ease, box-shadow 0.8s ease;
+    resize: horizontal;
+    overflow: hidden;
+    direction: rtl;
+}
+
+.tv-screen {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #E8E0D4;
+    transition: background 0.8s ease;
+    border-radius: 3px;
+    overflow: hidden;
+    direction: ltr;
+}
+
+.tv-screen canvas,
+.tv-screen iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.tv-screen canvas {
+    opacity: 0.6;
+}
+
+.tv-screen iframe {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+.tv.playing .tv-screen canvas {
+    opacity: 0;
+}
+
+.tv.playing .tv-screen iframe {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.tv-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 6px;
+    padding: 0 2px;
+    direction: ltr;
+}
+
+.tv-label {
+    font-family: "Shippori Mincho", serif;
+    font-size: 0.45rem;
+    letter-spacing: 2px;
+    color: #9E958A;
+    transition: color 0.8s ease;
+}
+
+.tv-power {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #4a4a4a;
+    transition: background 0.4s ease, box-shadow 0.4s ease;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    position: relative;
+}
+
+.tv-power::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+}
+
+.tv-body::-webkit-resizable {
+    display: none;
+}
+
+.tv-body::after {
+    content: "";
+    position: absolute;
+    bottom: 3px;
+    left: 3px;
+    width: 8px;
+    height: 8px;
+    border-left: 1.5px solid rgba(0, 0, 0, 0.15);
+    border-bottom: 1.5px solid rgba(0, 0, 0, 0.15);
+    pointer-events: none;
+    transition: border-color 0.8s ease;
+}
+
+.tv.playing .tv-power {
+    background: #7CAA6E;
+    box-shadow: 0 0 4px rgba(124, 170, 110, 0.5);
+}
+
+/* --- Lo-Fi filter --- */
+
+.tv-filter-btn {
+    background: none;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 2px;
+    font-family: 'DS-Digital', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 1px;
+    color: #9E958A;
+    cursor: pointer;
+    padding: 1px 5px;
+    transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+
+.tv-filter-btn:hover {
+    color: #6E6358;
+    border-color: rgba(0, 0, 0, 0.22);
+}
+
+.tv-filter-btn.active {
+    color: #C4956E;
+    border-color: rgba(196, 149, 110, 0.4);
+    background: rgba(196, 149, 110, 0.08);
+}
+
+.tv-crt {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.tv.lofi .tv-crt { opacity: 1; }
+
+.tv.lofi .tv-screen iframe {
+    filter: sepia(0.25) contrast(1.15) brightness(0.85) saturate(0.7);
+}
+
+.tv-scanlines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 2px,
+        rgba(0, 0, 0, 0.15) 2px,
+        rgba(0, 0, 0, 0.15) 3px
+    );
+}
+
+.tv-vignette {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        ellipse at center,
+        transparent 50%,
+        rgba(0, 0, 0, 0.35) 100%
+    );
+}
+
+.tv-flicker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    animation: tvFlicker 4s infinite;
+    background: transparent;
+}
+
+@keyframes tvFlicker {
+    0%, 94%, 100% { opacity: 0; }
+    95% { opacity: 0.03; background: rgba(255, 255, 255, 1); }
+    96% { opacity: 0; }
+}
+
+/* =============================================
+   Dusk mode (夕) — 茜色 / akane-iro
+   ============================================= */
+
+.dusk-mode {
+    background: linear-gradient(175deg, #E8CBBA, #D4A68A, #C48E70) !important;
+    color: #3E2E22;
+}
+
+.dusk-mode::before { border-color: rgba(120, 70, 35, 0.08); }
+.dusk-mode .container::after { color: rgba(100, 60, 30, 0.15); }
+.dusk-mode .song-title { color: #8B7260; }
+.dusk-mode .translation { color: #907662; }
+
+.dusk-mode .container:hover {
+    text-shadow: 0 0 20px rgba(180, 110, 60, 0.2);
+    color: #2E1E14;
+}
+
+.dusk-mode .mode-toggle { border-color: rgba(100, 60, 30, 0.2); color: #8B6E55; }
+.dusk-mode .mode-toggle:hover { border-color: rgba(100, 60, 30, 0.4); color: #5C3D26; box-shadow: 0 0 12px rgba(180, 110, 60, 0.1); }
+
+.dusk-mode .time-display { color: #8B6E55; }
+.dusk-mode .time-display:hover { color: #5C3D26; }
+
+.dusk-mode .playlist-toggle { border-color: rgba(100, 60, 30, 0.15); color: #8B6E55; }
+.dusk-mode .playlist-toggle:hover { color: #5C3D26; }
+.dusk-mode .playlist-panel li { color: #8B6E55; }
+.dusk-mode .playlist-panel li:hover,
+.dusk-mode .playlist-panel li.active { color: #5C3D26; }
+
+.dusk-mode .pomo-time { color: #8B7260; }
+.dusk-mode .pomo-btn { color: #8B7260; }
+
+.dusk-mode .tv-screen { background: #D8CABC; }
+.dusk-mode .tv-body { background: #C4AA90; }
+.dusk-mode .tv-body::after { border-color: rgba(80, 50, 20, 0.15); }
+.dusk-mode .tv-label { color: #8B7260; }
+.dusk-mode .tv-filter-btn { color: #8B7260; border-color: rgba(80, 50, 20, 0.15); }
+.dusk-mode .tv-filter-btn:hover { color: #5C3D26; }
+.dusk-mode .tv-filter-btn.active { color: #C4956E; border-color: rgba(196, 149, 110, 0.35); background: rgba(196, 149, 110, 0.1); }
+
+/* =============================================
+   Night mode (夜) — 藍色 / ai-iro
+   ============================================= */
+
+.night-mode {
+    background: linear-gradient(175deg, #14172A, #0F1222, #191D33) !important;
+    color: #B0B8D0;
+}
+
+.night-mode::before { border-color: rgba(130, 150, 200, 0.06); width: 320px; height: 320px; }
+.night-mode .container::after { color: rgba(160, 170, 210, 0.12); }
+.night-mode .song-title { color: #6A7290; }
+.night-mode .translation { color: #606880; }
+
+.night-mode .container:hover {
+    text-shadow: 0 0 25px rgba(140, 160, 220, 0.15);
+    color: #D8DDF0;
+}
+
+.night-mode .mode-toggle { border-color: rgba(110, 130, 180, 0.18); color: #5C6888; }
+.night-mode .mode-toggle:hover { border-color: rgba(110, 130, 180, 0.35); color: #8895B8; box-shadow: 0 0 14px rgba(100, 120, 180, 0.1); }
+
+.night-mode .time-display { color: #5C6888; }
+.night-mode .time-display:hover { color: #8895B8; text-shadow: 0 0 10px rgba(100, 120, 180, 0.2); }
+
+.night-mode .playlist-toggle { border-color: rgba(110, 130, 180, 0.15); color: #5C6888; }
+.night-mode .playlist-toggle:hover { color: #8895B8; }
+.night-mode .playlist-panel li { color: #5C6888; }
+.night-mode .playlist-panel li:hover,
+.night-mode .playlist-panel li.active { color: #8895B8; }
+
+.night-mode .pomo-time { color: #5C6888; }
+.night-mode .pomo-btn { color: #5C6888; }
+
+.night-mode .tv-screen { background: #282C3E; }
+.night-mode .tv-body { background: #1E2030; box-shadow: 0 2px 16px rgba(0, 0, 0, 0.3); }
+.night-mode .tv-body::after { border-color: rgba(130, 150, 200, 0.12); }
+.night-mode .tv-label { color: #4A5270; }
+.night-mode .tv-filter-btn { color: #4A5270; border-color: rgba(110, 130, 180, 0.12); }
+.night-mode .tv-filter-btn:hover { color: #8895B8; }
+.night-mode .tv-filter-btn.active { color: #7A8AB0; border-color: rgba(122, 138, 176, 0.3); background: rgba(122, 138, 176, 0.08); }
+
+/* =============================================
+   Mobile
+   ============================================= */
+
+@media (max-width: 768px) {
+    .container { max-width: 90%; font-size: 1.2rem; line-height: 1.8; }
+    .song-title, .translation { font-size: 0.85rem; margin-top: 8px; }
+
+    .time-display { top: 12px; left: 12px; }
+    .time-display .clock { font-size: 1rem; }
+    .time-display .date { font-size: 0.55rem; }
+
+    .mode-toggle { top: 12px; right: 12px; width: 40px; height: 40px; font-size: 1rem; }
+
+    .container:active .original { opacity: 0; visibility: hidden; }
+    .container:active .hiragana { opacity: 1; visibility: visible; }
+    .container:active .translation { opacity: 1; }
+
+    .playlist-toggle { bottom: 12px; left: 12px; width: 32px; height: 32px; font-size: 0.75rem; }
+    .playlist-panel { bottom: 54px; left: 12px; }
+
+    .tv { bottom: 10px; right: 10px; }
+    .tv-body { width: 240px; padding: 7px 7px 10px; }
+}

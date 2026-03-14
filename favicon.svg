@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" fill="#000"/>
+  <!-- Left vertical with art deco serifs -->
+  <rect x="7" y="5" width="2.5" height="22" fill="#667788"/>
+  <rect x="5" y="5" width="7" height="2" fill="#667788"/>
+  <rect x="5" y="25" width="7" height="2" fill="#667788"/>
+  <!-- Right vertical with art deco serifs -->
+  <rect x="22.5" y="5" width="2.5" height="22" fill="#667788"/>
+  <rect x="20" y="5" width="7" height="2" fill="#667788"/>
+  <rect x="20" y="25" width="7" height="2" fill="#667788"/>
+  <!-- Crossbar with deco diamond accent -->
+  <rect x="9.5" y="15" width="13" height="2" fill="#667788"/>
+  <polygon points="16,12.5 18,16 16,19.5 14,16" fill="#667788" opacity="0.5"/>
+</svg>

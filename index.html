@@ -1,98 +1,95 @@
 <!doctype html>
-<html>
+<html lang="en">
     <head>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.clouds2.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"></script>
-        <script src="vanta.trunk.min.js"></script>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <title>Hao's Homepage</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-        <link rel="stylesheet" type="text/css" href="style.css">
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-        </style>
+        <link rel="icon" type="image/svg+xml" href="favicon.svg">
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Poiret+One&display=swap" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+        <script src="vendor/vanta.trunk.min.js"></script>
+        <script src="js/background.js" defer></script>
+        <script src="js/lamp.js" defer></script>
     </head>
-    <script src="background.js" defer></script>
-    <script src="lamp.js" defer></script>
-    <script src="snow.js" defer></script>
-
-    <div id="vanta-background"></div>
     <body class="is-preloaded">
+        <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
+            <filter id="grav-lens">
+                <feTurbulence type="turbulence" baseFrequency="0.02 0.015" numOctaves="3" seed="5" result="warp">
+                    <animate attributeName="baseFrequency" values="0.02 0.015;0.025 0.02;0.02 0.015" dur="8s" repeatCount="indefinite"/>
+                </feTurbulence>
+                <feDisplacementMap in="SourceGraphic" in2="warp" scale="12" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+        </svg>
+        <div id="vanta-background"></div>
 
-				<!-- Header -->
-            <header id="header" class="site-header" role="banner">
-                <div class="wrapper">
-                    <a class="site-title" href="index.html">Hao's Homepage</a>
-                </div>
-            </header>
-
-            <button id="indexModeToggle"> </button>
-            <div id="falling-leaves"></div>
-            
-
-            <div id="lamp-container">
-                <div id="lamp-string"></div>
-                <div id="lamp-bulb"></div>
-                <div id="lamp-light"></div>
+        <header id="header" class="site-header" role="banner">
+            <div class="wrapper">
+                <a class="site-title" href="index.html">Hao's Homepage</a>
             </div>
+        </header>
 
-            <div id="main">
-                <a href="https://ezyhdxm.github.io/hao-blog/" data-text="Blogs" class="fade-button">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    Blogs
-                </a>
-                <a href="https://ezyhdxm.github.io/academic-site/" data-text="Publications" class="fade-button">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    Publications
-                </a>
-                <a href="other.html" id="otherLink" data-text="Others" class="fade-button">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    Others
-                </a>
-            </div>
+        <button id="indexModeToggle" aria-label="Toggle day/night mode"> </button>
+
+        <div id="lamp-container">
+            <div id="lamp-string"></div>
+            <div id="lamp-bulb"></div>
+            <div id="lamp-light"></div>
+        </div>
+
+        <div id="main">
+            <a href="https://ezyhdxm.github.io/hao-blog/" data-text="Blogs" class="fade-button">
+                <div class="lens-warp"></div>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                Blogs
+            </a>
+            <a href="https://ezyhdxm.github.io/academic-site/" data-text="Publications" class="fade-button">
+                <div class="lens-warp"></div>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                Publications
+            </a>
+            <a href="other.html" id="otherLink" data-text="Others" class="fade-button">
+                <div class="lens-warp"></div>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                Others
+            </a>
+        </div>
 
         <script>
-            // 页面跳转的概率配置
             const pages = [
-                { url: "other.html", probability: 0.8 },    // 80% 概率跳转到 other.html
-                { url: "cyberpunk.html", probability: 0.2 }, // 20% 概率跳转到 cyberpunk.html
-               // { url: "secret.html", probability: 0.05 }    // 10% 概率跳转到 secret.html
+                { url: "other.html", probability: 0.8 },
+                { url: "cyberpunk.html", probability: 0.2 },
             ];
 
-            // 计算随机跳转的目标页面
             function getRandomPage() {
-                let rand = Math.random(); // 生成 0~1 之间的随机数
-                let cumulativeProbability = 0;
-
+                let rand = Math.random();
+                let cumulative = 0;
                 for (let page of pages) {
-                    cumulativeProbability += page.probability;
-                    if (rand < cumulativeProbability) {
-                        return page.url;
-                    }
+                    cumulative += page.probability;
+                    if (rand < cumulative) return page.url;
                 }
-
-                return pages[0].url; // 以防概率计算误差，默认返回第一个页面
+                return pages[0].url;
             }
 
-            // 监听点击 "Others" 按钮
             document.getElementById("otherLink").addEventListener("click", function(event) {
-                event.preventDefault(); // 阻止默认跳转
-                document.body.classList.add("fade-out"); // 页面淡出动画
-
+                event.preventDefault();
+                document.body.classList.add("fade-out");
                 setTimeout(() => {
-                    window.location.href = getRandomPage(); // 随机跳转页面
-                }, 500); // 500ms 后跳转
+                    window.location.href = getRandomPage();
+                }, 500);
             });
         </script>
     </body>

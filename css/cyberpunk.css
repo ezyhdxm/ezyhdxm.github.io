@@ -1,0 +1,432 @@
+@font-face {
+    font-family: "3270 Nerd Font";
+    src: url("../assets/fonts/3270NerdFont-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: 'Noto Serif SC';
+    src: url('../assets/fonts/NotoSerifSC-Light.ttf') format('truetype');
+}
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+@keyframes glitch {
+    0%   { text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff; }
+    20%  { text-shadow: -2px 1px #ff00ff, 2px -1px #00ffff; }
+    40%  { text-shadow: 2px -2px #ff2d95, -2px 2px #0ff; }
+    60%  { text-shadow: -1px -2px #ff00ff, 1px 2px #00ffff; }
+    80%  { text-shadow: 2px 1px #ff2d95, -2px -1px #0ff; }
+    100% { text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff; }
+}
+
+@keyframes flicker {
+    0%, 100% { opacity: 1; }
+    92% { opacity: 1; }
+    93% { opacity: 0.7; }
+    94% { opacity: 1; }
+    96% { opacity: 0.4; }
+    97% { opacity: 1; }
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    background-color: #0a0a0f;
+    color: #0ff;
+    font-family: "Chakra Petch", "Noto Sans JP", sans-serif;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.5s, color 0.5s;
+    gap: 16px;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* --- Heading --- */
+
+.general-text {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #0ff;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(0, 255, 255, 0.15);
+    padding: 12px 20px;
+    display: inline-block;
+    border-radius: 2px;
+    text-shadow:
+        0 0 6px rgba(0, 255, 255, 0.6),
+        0 0 20px rgba(0, 255, 255, 0.25);
+    transition: text-shadow 0.3s, color 0.3s, border-color 0.3s;
+}
+
+h1.general-text {
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: 6px;
+    border-color: rgba(0, 255, 255, 0.3);
+    animation: flicker 6s infinite;
+}
+
+.general-text:hover {
+    color: #fff;
+    text-shadow:
+        0 0 8px rgba(0, 255, 255, 0.9),
+        0 0 30px rgba(0, 255, 255, 0.4),
+        0 0 60px rgba(0, 255, 255, 0.15);
+    border-color: rgba(0, 255, 255, 0.5);
+}
+
+/* --- Terminal block --- */
+
+.terminal {
+    background: rgba(0, 0, 0, 0.85);
+    width: fit-content;
+    padding: 16px 24px;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(0, 255, 0, 0.12);
+}
+
+.terminal::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 2px,
+        rgba(0, 255, 0, 0.04) 2px,
+        rgba(0, 255, 0, 0.04) 4px
+    );
+    pointer-events: none;
+}
+
+.commandline-text {
+    font-family: "Share Tech Mono", "3270 Nerd Font", monospace;
+    font-size: 0.85rem;
+    letter-spacing: 1.5px;
+    color: #33ff33;
+    padding: 4px 0;
+    display: block;
+    text-shadow:
+        0 0 4px rgba(51, 255, 51, 0.5),
+        0 0 12px rgba(51, 255, 51, 0.2);
+    transition: text-shadow 0.3s, color 0.3s;
+}
+
+.commandline-text:hover {
+    color: #7fff7f;
+    text-shadow:
+        0 0 6px rgba(51, 255, 51, 0.8),
+        0 0 20px rgba(51, 255, 51, 0.3);
+}
+
+/* --- Glitch --- */
+
+.glitch-text {
+    display: inline-block;
+    position: relative;
+    transition: transform 0.1s ease-in-out;
+}
+
+.glitch-text.animated {
+    animation: glitch 0.1s infinite alternate;
+}
+
+.glitch-click {
+    animation: glitch 0.05s infinite alternate;
+}
+
+/* --- Poem / lyrics --- */
+
+.poem {
+    font-family: "Chakra Petch", sans-serif;
+    font-weight: 300;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    margin-top: 20px;
+    transition: opacity 0.3s ease-in-out;
+    position: relative;
+}
+
+.poem:hover {
+    text-shadow:
+        0 0 10px rgba(0, 255, 255, 0.6),
+        0 0 30px rgba(0, 255, 255, 0.2);
+    color: #fff;
+}
+
+.hiragana {
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    opacity: 0.5;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+.original {
+    font-size: 1.5rem;
+    opacity: 1;
+    white-space: normal;
+    text-align: center;
+    letter-spacing: 3px;
+}
+
+.container {
+    max-width: 80%;
+    font-size: 1.5rem;
+    line-height: 1.8;
+    transition: opacity 0.5s ease-in-out;
+    position: relative;
+}
+
+.song-title {
+    font-family: "Orbitron", sans-serif;
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255, 0, 255, 0.5);
+    margin-top: 14px;
+}
+
+.translation {
+    font-family: 'Noto Serif SC', 'Source Han Serif', serif;
+    font-size: 0.95rem;
+    color: rgba(0, 255, 255, 0.35);
+    margin-top: 8px;
+    opacity: 0.7;
+    text-align: center;
+    line-height: 1.6;
+}
+
+/* --- Time display --- */
+
+.time-display {
+    font-family: "Share Tech Mono", "3270 Nerd Font", monospace;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    color: #0ff;
+    cursor: pointer;
+    transition: text-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
+    text-shadow: 0 0 4px rgba(0, 255, 255, 0.3);
+}
+
+.time-display:hover {
+    text-shadow:
+        0 0 6px rgba(0, 255, 255, 0.7),
+        0 0 20px rgba(0, 255, 255, 0.3);
+    color: #fff;
+}
+
+/* --- Video background --- */
+
+.video-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    background: #000;
+}
+
+.video-bg.active {
+    opacity: 1;
+}
+
+.video-bg iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 450vw;
+    height: 450vh;
+    border: none;
+    pointer-events: none;
+}
+
+body.broadcasting canvas {
+    opacity: 0.35;
+    transition: opacity 1.5s ease;
+}
+
+body.broadcasting .general-text,
+body.broadcasting .time-display {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+}
+
+/* CRT overlay — sits above all content */
+
+.crt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+body.broadcasting .crt-overlay {
+    opacity: 1;
+}
+
+.crt-scanlines {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(0, 0, 0, 0.12) 3px,
+        rgba(0, 0, 0, 0.12) 4px
+    );
+}
+
+.crt-vignette {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(
+        ellipse at center,
+        transparent 40%,
+        rgba(0, 0, 0, 0.6) 100%
+    );
+}
+
+.crt-flicker {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    animation: crtFlicker 5s infinite;
+}
+
+@keyframes crtFlicker {
+    0%, 93%, 100% { opacity: 0; }
+    94% { opacity: 0.04; background: rgba(255, 255, 255, 1); }
+    95% { opacity: 0; }
+    97% { opacity: 0.02; background: rgba(0, 255, 255, 0.5); }
+    98% { opacity: 0; }
+}
+
+/* --- Broadcast button --- */
+
+.broadcast-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 10001;
+    font-family: "Orbitron", sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #0ff;
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    padding: 10px 18px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 4px rgba(0, 255, 255, 0.4);
+}
+
+.broadcast-btn:hover {
+    color: #fff;
+    border-color: rgba(0, 255, 255, 0.5);
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.8);
+    box-shadow: 0 0 16px rgba(0, 255, 255, 0.15);
+}
+
+.broadcast-btn.on {
+    color: #ff2d95;
+    border-color: rgba(255, 45, 149, 0.4);
+    text-shadow:
+        0 0 6px rgba(255, 45, 149, 0.6),
+        0 0 20px rgba(255, 45, 149, 0.2);
+    animation: flicker 4s infinite;
+}
+
+.broadcast-btn.on:hover {
+    color: #ff6fb5;
+    border-color: rgba(255, 45, 149, 0.6);
+    box-shadow: 0 0 16px rgba(255, 45, 149, 0.2);
+}
+
+/* --- Black screen overlay --- */
+
+.black-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.7s ease-in-out, visibility 0s linear 0.7s;
+    z-index: 9999;
+}
+
+/* --- Mobile --- */
+
+@media (max-width: 768px) {
+    h1.general-text { font-size: 1rem; letter-spacing: 3px; }
+    .general-text { font-size: 0.85rem; padding: 8px 14px; }
+    .commandline-text { font-size: 0.75rem; }
+    .poem { font-size: 1.2rem; }
+    .original { font-size: 1.2rem; }
+    .hiragana { font-size: 1rem; }
+    .broadcast-btn { bottom: 12px; right: 12px; font-size: 0.5rem; padding: 8px 14px; }
+}

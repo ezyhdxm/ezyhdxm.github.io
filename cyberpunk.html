@@ -3,404 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css">
     <title>言葉</title>
-    <script src="cyber.js" defer></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
-        
-        @font-face {
-            font-family: "3270 Nerd Font";
-            src: url("assets/fonts/3270NerdFont-Regular.ttf") format("truetype");
-        }
-        /* 页面淡入 */
-        .fade-in {
-            opacity: 0;
-            animation: fadeIn 0.5s ease-in-out forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* 页面淡出 */
-        .fade-out {
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        /* 赛博朋克 Glitch 效果 */
-        @keyframes glitch {
-            0% { text-shadow: 3px 0px 5px #ff00ff, -3px 0px 5px #00ffff; }
-            25% { text-shadow: -3px 2px 6px #ff00ff, 3px -2px 6px #00ffff; }
-            50% { text-shadow: 3px -3px 7px #ff00ff, -3px 3px 7px #00ffff; }
-            75% { text-shadow: -3px -3px 8px #ff00ff, 3px 3px 8px #00ffff; }
-            100% { text-shadow: 3px 0px 5px #ff00ff, -3px 0px 5px #00ffff; }
-        }
-
-        .hiragana {
-            font-size: 1.3rem;
-            opacity: 0.6;
-            /*white-space: nowrap; */
-            text-align: center; /* 文字居中 */
-        }
-        .original {
-            font-size: 1.5rem;
-            opacity: 1;
-            white-space: normal;
-            /*white-space: nowrap; */
-            text-align: center; /* 文字居中 */
-        }
-
-        .general-text {
-            font-family: "Noto Sans JP", monospace;
-            font-size: 20px;
-            color: #00ffff;
-            background-color: black;
-            padding: 10px;
-            display: inline-block;
-            border-radius: 5px;
-            text-shadow: 0 0 5px #33ff33, 0 0 10px #33ff33;
-        }
-
-        .commandline-text {
-            font-family: "3270 Nerd Font", monospace;
-            font-size: 20px;
-            color: #33ff33;
-            background-color: black;
-            padding: 10px;
-            display: inline-block;
-            border-radius: 5px;
-            text-shadow: 0 0 5px #33ff33, 0 0 10px #33ff33;
-        }
-
-        /* 添加终端扫描线效果 */
-        @keyframes scanline {
-            0% { background-position: 0 0; }
-            100% { background-position: 0 100%; }
-        }
-
-        .terminal {
-            background: black;
-            width: fit-content;
-            padding: 20px;
-            border-radius: 5px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .terminal::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                rgba(0, 255, 0, 0.1) 50%, 
-                rgba(0, 255, 0, 0.05) 50%
-            );
-            background-size: 100% 4px;
-            animation: scanline 0.2s linear infinite;
-        }
-
-
-        .glitch-text.animated {
-            animation: glitch 0.1s infinite alternate;
-        }
-
-        /* 黑屏渐变 */
-        .black-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: black;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.7s ease-in-out, visibility 0s linear 0.7s;
-            z-index: 9999;
-        }
-
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            height: 100vh;
-            margin: 0;
-            background-color: #0d0d0d;
-            color: #0ff;
-            font-family: "Noto Sans JP", "Hiragino Kaku Gothic Pro", "Meiryo", sans-serif;
-            text-align: center;
-            cursor: pointer;
-            user-select: none;
-            transition: background-color 0.5s, color 0.5s;
-        }
-
-        canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        .glitch-text{
-            display: inline-block;
-            position: relative;
-            transition: transform 0.1s ease-in-out;
-        }
-
-        .glitch-click {
-            animation: glitch 0.05s infinite alternate;
-        }
-
-        .poem {
-            font-size: 1.5rem;
-            margin-top: 30px;
-            transition: opacity 0.3s ease-in-out;
-            position: relative;
-        }
-
-        .poem:hover {
-            text-shadow: 3px 3px 15px rgba(0, 255, 255, 0.8);
-            color: #fff;
-        }
-
-        .general-text:hover {
-            text-shadow: 3px 3px 15px rgba(0, 255, 255, 0.8);
-            color: #fff;
-        }
-
-        .commandline-text:hover {
-            text-shadow: 3px 3px 15px rgba(0, 255, 255, 0.8);
-            color: #fff;
-        }
-
-        .container {
-            max-width: 80%;
-            font-size: 1.5rem;
-            line-height: 1.8;
-            transition: opacity 0.5s ease-in-out;
-            position: relative;
-        }
-
-        .song-title {
-            font-size: 1rem;
-            color: #777;
-            margin-top: 10px;
-        }
-
-        .translation {
-            font-family: 'Noto Serif SC', 'Source Han Serif', 'Songti SC', serif;
-            font-size: 1.1rem;
-            color: #555;
-            margin-top: 8px;
-            opacity: 0.7;
-            text-align: center;
-            vertical-align: middle;
-            line-height: 1.5;
-        }
-
-        /* 时间样式 */
-        .time-display {
-            font-family: "3270 Nerd Font", monospace;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 1rem;
-            color: #0ff;
-            cursor: pointer;
-            transition: text-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
-        }
-
-        /* 鼠标悬停时的效果 */
-        .time-display:hover {
-            text-shadow: 3px 3px 10px rgba(0, 255, 255, 0.5);
-            color: #fff;
-        }
-    </style>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Chakra+Petch:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/cyberpunk.css">
+    <script src="js/lyrics-loader.js"></script>
+    <script src="js/cyber.js" defer></script>
 </head>
 <body class="fade-in">
 
-    <!-- 画布背景 -->
+    <div class="video-bg" id="videoBg">
+        <iframe id="bgVideo" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+
     <canvas id="matrixCanvas"></canvas>
 
+    <div class="crt-overlay">
+        <div class="crt-scanlines"></div>
+        <div class="crt-vignette"></div>
+        <div class="crt-flicker"></div>
+    </div>
 
     <h1 class="general-text glitch-text">サイバーパンク世界へようこそ</h1>
     <p class="general-text glitch-text">これは現実ではない。あなたは今、データの夢を見ている。</p>
     <p class="general-text glitch-text">ネットの彼方に、真実が待っている。</p>
 
-    <div class="terminal"></div>
-    <p class="commandline-text glitch-text">ERROR: Data Corrupted...</p>
-    <p class="commandline-text glitch-text">root@localhost:~# rm -rf /</p>
+    <div class="terminal">
+        <span class="commandline-text glitch-text">ERROR: Data Corrupted...</span>
+        <span class="commandline-text glitch-text">root@localhost:~# rm -rf /</span>
     </div>
 
     <div class="poem glitch-text" id="poem">
         <div class="text hiragana" id="hiragana"> </div>
         <div class="text original" id="original">
-        あまりにも馴染みのある言葉は詩的な味わいを失い...
+            あまりにも馴染みのある言葉は詩的な味わいを失い...
         </div>
         <div class="song-title" id="song-title"></div>
         <div class="translation" id="translation"></div>
     </div>
-    
-    <!-- 黑屏元素 -->
+
     <div class="black-screen" id="blackScreen"></div>
 
-    <!-- 实时时间 -->
     <div class="time-display glitch-text" id="timeDisplay">Loading time...</div>
 
-    <script>
-        // 让页面的所有文字随机抖动
-        function addGlitchEffect() {
-            let elements = document.querySelectorAll(".glitch-text");
+    <button class="broadcast-btn" id="broadcastBtn">▶ Broadcast</button>
 
-            elements.forEach(element => {
-                let chance = Math.random(); // 生成 0~1 之间的随机数
+    <script src="js/cyberpunk.js"></script>
 
-                if (chance < 0.7) { // 70% 概率添加 Glitch 效果
-                    element.classList.add("animated");
-                } else {
-                    element.classList.remove("animated");
-                }
-            });
-
-            // 让抖动的频率每 500ms 随机变化
-            setTimeout(addGlitchEffect, 500);
-        }
-
-        // 启动 Glitch 效果
-        addGlitchEffect();
-
-        const blackScreen = document.getElementById("blackScreen");
-
-
-        const poemElement = document.getElementById("poem");
-
-        // 点击诗句时，随机切换歌词并添加 Glitch 效果
-        poemElement.addEventListener("click", function() {
-            let randomIndex = Math.floor(Math.random() * lyrics.length);
-            poemElement.innerHTML = lyrics[randomIndex]; // 替换诗句内容
-
-            // 添加更强的 Glitch 效果
-            poemElement.classList.add("glitch-click");
-
-            // 500ms 后移除 Glitch 效果
-            setTimeout(() => {
-                poemElement.classList.remove("glitch-click");
-            }, 500);
-        });
-
-        const canvas = document.getElementById("matrixCanvas");
-        const ctx = canvas.getContext("2d");
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const columns = Math.floor(canvas.width / 20);
-        const drops = Array(columns).fill(0);
-        
-        function drawMatrix() {
-            // 轻微透明的黑色遮罩，制造残影效果
-            ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // 设置基础字体
-            ctx.font = "16px '3270 Nerd Font', monospace";
-
-            drops.forEach((y, index) => {
-                let text = String.fromCharCode(0x30A0 + Math.random() * 96); // 生成 Katakana 字符
-                let x = index * 20 + (Math.random() - 0.5) * 5; // **1. 行列抖动效果**
-
-                ctx.fillStyle = "rgb(0,100,0)"; // 默认绿色字符
-
-                // **2. 10% 概率触发 Glitch（颜色 & 乱码）**
-                if (Math.random() < 0.1) {
-                    if (Math.random() < 0.2) {
-                        ctx.fillStyle = Math.random() < 0.5 ? "#ff0000" : "#00ffff"; // 变红或变蓝
-                    }
-                    text = Math.random() < 0.5 ? "█" : String.fromCharCode(0x2588 + Math.random() * 10); // 乱码
-                    x += (Math.random() - 0.5) * 2; // **字符随机左右漂移**
-                    ctx.fillText(text, x, y + (Math.random() - 0.5) * 2); // **字符随机上下漂移**
-                } else {
-                    ctx.fillText(text, x, y);
-                }
-
-                // **3. 10% 概率调整字符大小**
-                if (Math.random() < 0.05) {
-                    ctx.font = Math.random() < 0.5 ? "14px '3270 Nerd Font'" : "18px '3270 Nerd Font'"; // 大小随机变化
-                } else {
-                    ctx.font = "16px '3270 Nerd Font'"; // 还原字体大小
-                }
-
-                // **4. 1% 概率短暂故障效果（黑屏）**
-                if (Math.random() < 0.005) {
-                    ctx.fillStyle = "black";
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                }
-
-                // **更新字符位置**
-                drops[index] = y > canvas.height || Math.random() > 0.975 ? 0 : y + 20;
-            });
-
-            // **5. 扫描线效果**
-            ctx.fillStyle = "rgba(0, 255, 0, 0.1)";
-            ctx.fillRect(0, Math.random() * canvas.height, canvas.width, 2);
-        }
-
-
-        /*
-        function drawMatrix() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = "#0f0";
-            ctx.font = "16px monospace";
-
-            drops.forEach((y, index) => {
-                const text = String.fromCharCode(0x30A0 + Math.random() * 96);
-                ctx.fillText(text, index * 20, y);
-                drops[index] = y > canvas.height || Math.random() > 0.975 ? 0 : y + 20;
-            });
-        }
-            */
-
-        setInterval(drawMatrix, 50);
-
-        // 时间动态变化 & 也加入随机 Glitch 效果
-        function updateTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString();
-            const timeDisplay = document.getElementById("timeDisplay");
-            timeDisplay.innerHTML = timeString;
-
-            let chance = Math.random();
-            if (chance < 0.5) { // 50% 概率触发 Glitch
-                timeDisplay.classList.add("animated");
-            } else {
-                timeDisplay.classList.remove("animated");
-            }
-        }
-
-        setInterval(updateTime, 1000); // 每秒更新时间
-        updateTime(); // 页面加载时立即执行
-
-        // 生成随机时间范围函数
-        function randomTime(min, max) {
-            return Math.random() * (max - min) + min;
-        }
-
-        document.getElementById("timeDisplay").addEventListener("click", function() {
-            document.body.classList.add("fade-out");
-            setTimeout(() => {
-                window.location.href = "index.html";
-            }, 500);
-        });
-    </script>
 </body>
 </html>
