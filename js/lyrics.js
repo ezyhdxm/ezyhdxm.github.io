@@ -17,10 +17,10 @@ document.addEventListener("DOMContentLoaded", () => {
             songTitleElement.innerHTML = "— " + song.title;
             translationElement.innerHTML = song.lyrics.chinese[index];
             hiraganaElement.innerHTML = song.lyrics.hiragana[index];
+            quoteElement.appendChild(hiraganaElement);
             quoteElement.appendChild(originalElement);
             quoteElement.appendChild(songTitleElement);
             quoteElement.appendChild(translationElement);
-            quoteElement.appendChild(hiraganaElement);
             quoteElement.style.opacity = "1";
         }, 500);
     }

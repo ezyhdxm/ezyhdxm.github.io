@@ -60,15 +60,25 @@ Add the filename to `assets/lyrics/index.json`:
 ]
 ```
 
-## 3. (Yorushika only) Add to the TV playlist
+## 3. Add to the video player
 
-If it's a Yorushika song and you want it in the TV player, add an entry to `songVideos` in `js/other.js`:
+### Yorushika songs → TV player on `other.html`
+
+Add an entry to `songVideos` in `js/other.js`:
 
 ```js
 "晴る": "CkvWJNt77mU"
 ```
 
-The key must match the `"title"` in the song JSON. The value is the YouTube video ID (the part after `v=` in a YouTube URL).
+### Cyberpunk songs → Broadcast on `cyberpunk.html`
+
+Add an entry to `cyberVideos` in `js/cyberpunk.js`:
+
+```js
+"AIZO": "zz2a9Q2Wru0"
+```
+
+In both cases, the key must match the `"title"` in the song JSON. The value is the YouTube video ID (the part after `v=` in a YouTube URL).
 
 ---
 
@@ -91,5 +101,6 @@ assets/lyrics/
     ├── tada-kimi-ni-hare.json ← ただ君に晴れ
     ├── haru-dorobou.json    ← 春泥棒
     ├── obenkyou.json        ← お勉強しといてよ
-    └── otoneke.json         ← オトネケ
+    ├── otoneke.json         ← オトネケ
+    └── aizo.json            ← AIZO
 ```

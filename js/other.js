@@ -73,19 +73,22 @@ modeToggle.addEventListener("click", function () {
    Glitch effect
    ============================================= */
 
-let glitchProbability = 0.3;
-if (document.body.classList.contains("night-mode")) {
-    glitchProbability = 0.6;
+function getGlitchProbability() {
+    return document.body.classList.contains("night-mode") ? 0.6 : 0.3;
 }
 
 timeDisplay.addEventListener("click", function (event) {
     event.preventDefault();
-    if (Math.random() < glitchProbability) {
+    const hasGlitch = Math.random() < getGlitchProbability();
+    if (hasGlitch) {
         timeDisplay.classList.add("glitch");
         quoteElement.classList.add("glitch");
+        setTimeout(() => { document.body.classList.add("fade-out"); }, 500);
+        setTimeout(() => { window.location.href = "index.html"; }, 1000);
+    } else {
+        document.body.classList.add("fade-out");
+        setTimeout(() => { window.location.href = "index.html"; }, 400);
     }
-    setTimeout(() => { document.body.classList.add("fade-out"); }, 500);
-    setTimeout(() => { window.location.href = "index.html"; }, 1000);
 });
 
 function triggerNightGlitch() {
@@ -182,8 +185,7 @@ setInterval(stepLogo, 800);
 /* =============================================
    TV — playlist & playback
    Song title → YouTube video ID mapping.
-   To add a song, add an entry here and in
-   assets/lyrics/lyrics_with_hiragana.json.
+   See HOW_TO_ADD_SONGS.md for instructions.
    ============================================= */
 
 const songVideos = {

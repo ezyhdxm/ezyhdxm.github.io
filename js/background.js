@@ -30,8 +30,6 @@ function setNightColors() {
     setThemeColors(0x2c3641, 0x983E3F);
 }
 
-let shakeInterval;
-
 document.getElementById("indexModeToggle").addEventListener("click", function () {
     if (document.body.classList.contains("night-mode")) {
         setDayColors();
@@ -41,7 +39,7 @@ document.getElementById("indexModeToggle").addEventListener("click", function ()
             y: -20,
             duration: 0.5,
             ease: "power2.inOut",
-            onComplete: () => {
+            onComplete: function () {
                 gsap.set(".fade-button", { opacity: 1, y: 0 });
                 gsap.fromTo(".fade-button",
                     { opacity: 0, y: 15 },
@@ -50,26 +48,19 @@ document.getElementById("indexModeToggle").addEventListener("click", function ()
             }
         });
 
-        if (typeof isSwinging !== "undefined" && isSwinging) {
+        if (isSwinging) {
             isShakingQueued = true;
-        } else if (typeof startLampShake === "function") {
+        } else {
             startLampShake();
         }
     } else {
         setNightColors();
-
-        if (typeof randomizeNeonEffect === "function") randomizeNeonEffect();
+        randomizeNeonEffect();
 
         gsap.fromTo(".fade-button",
             { opacity: 0, y: -20 },
             { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", stagger: 0.1 }
         );
-
-        if (typeof isSwinging !== "undefined" && isSwinging) {
-            isShakingQueued = true;
-        } else {
-            clearInterval(shakeInterval);
-        }
     }
 
     document.body.classList.toggle("day-mode");
@@ -80,18 +71,18 @@ const headerEl = document.getElementById("header");
 let touchStartY = 0;
 
 if (headerEl) {
-    headerEl.addEventListener("touchstart", (e) => {
+    headerEl.addEventListener("touchstart", function (e) {
         touchStartY = e.touches[0].clientY;
     }, { passive: true });
 
-    headerEl.addEventListener("touchmove", (e) => {
+    headerEl.addEventListener("touchmove", function (e) {
         const movedY = e.touches[0].clientY - touchStartY;
         if (movedY > 0 && movedY < 80) {
             gsap.to(headerEl, { y: movedY * 0.5, opacity: 1 - movedY / 150, ease: "power1.out" });
         }
     });
 
-    headerEl.addEventListener("touchend", () => {
+    headerEl.addEventListener("touchend", function () {
         gsap.to(headerEl, { y: 0, opacity: 1, duration: 0.3, ease: "elastic.out(1, 0.5)" });
     });
 }

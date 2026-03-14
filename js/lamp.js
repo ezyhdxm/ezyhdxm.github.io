@@ -14,54 +14,85 @@ const gravity = 0.5;
 const damping = 0.995;
 const angleThreshold = 0.005;
 let animationFrame;
+let isSwinging = false;
+let isShakingQueued = false;
+
+let moveEvent, endEvent;
 
 function startDrag(event) {
     isDragging = true;
-    startX = event.touches ? event.touches[0].clientX : event.clientX;
+    const isTouch = !!event.touches;
+    startX = isTouch ? event.touches[0].clientX : event.clientX;
     lastMouseX = startX;
     angularVelocity = 0;
 
-    document.addEventListener(event.touches ? "touchmove" : "mousemove", onDrag);
-    document.addEventListener(event.touches ? "touchend" : "mouseup", onRelease);
+    moveEvent = isTouch ? "touchmove" : "mousemove";
+    endEvent = isTouch ? "touchend" : "mouseup";
+    document.addEventListener(moveEvent, onDrag);
+    document.addEventListener(endEvent, onRelease);
 }
 
 function onDrag(event) {
     if (!isDragging) return;
-
     const clientX = event.touches ? event.touches[0].clientX : event.clientX;
     const deltaX = clientX - startX;
 
     angle = Math.max(-60, Math.min(60, deltaX * 0.5));
-    lampContainer.style.transform = `rotate(${angle}deg)`;
+    lampContainer.style.transform = "rotate(" + angle + "deg)";
 
     angularVelocity = (clientX - lastMouseX) * 0.05;
     lastMouseX = clientX;
 }
 
-function onRelease(event) {
+function onRelease() {
     isDragging = false;
-    document.removeEventListener(event.touches ? "touchmove" : "mousemove", onDrag);
-    document.removeEventListener(event.touches ? "touchend" : "mouseup", onRelease);
+    document.removeEventListener(moveEvent, onDrag);
+    document.removeEventListener(endEvent, onRelease);
 
     cancelAnimationFrame(animationFrame);
     startSwing();
 }
 
-let isSwinging = false;
+function startSwing() {
+    isSwinging = true;
+
+    function swing() {
+        angularAcceleration = -gravity * Math.sin(angle * (Math.PI / 180));
+        angularVelocity += angularAcceleration;
+        angularVelocity *= damping;
+        angle += angularVelocity;
+
+        if (Math.abs(angle) < angleThreshold && Math.abs(angularVelocity) < angleThreshold) {
+            lampContainer.style.transform = "rotate(0deg)";
+            isSwinging = false;
+            if (isShakingQueued) {
+                isShakingQueued = false;
+                startLampShake();
+            }
+            return;
+        }
+
+        if (angle > 60) { angle = 60; angularVelocity *= -0.7; }
+        if (angle < -60) { angle = -60; angularVelocity *= -0.7; }
+
+        lampContainer.style.transform = "rotate(" + angle + "deg)";
+        animationFrame = requestAnimationFrame(swing);
+    }
+
+    swing();
+}
 
 function startLampShake() {
-    clearInterval(shakeInterval);
-
     function sway() {
         const randomAngle = (Math.random() - 0.5) * 15;
         const duration = Math.random() * 1.5 + 1;
 
-        gsap.to("#lamp-container", {
+        gsap.to(lampContainer, {
             rotation: randomAngle,
             duration: duration,
             ease: "sine.inOut",
             yoyo: true,
-            onComplete: () => {
+            onComplete: function () {
                 if (Math.random() > 0.7 && !isSwinging) {
                     angle = randomAngle;
                     isSwinging = true;
@@ -73,34 +104,6 @@ function startLampShake() {
         });
     }
     sway();
-}
-
-let isShakingQueued = false;
-
-function startSwing(callback) {
-    isSwinging = true;
-
-    function swing() {
-        angularAcceleration = -gravity * Math.sin(angle * (Math.PI / 180));
-        angularVelocity += angularAcceleration;
-        angularVelocity *= damping;
-        angle += angularVelocity;
-
-        if (Math.abs(angle) < angleThreshold && Math.abs(angularVelocity) < angleThreshold) {
-            lampContainer.style.transform = `rotate(0deg)`;
-            isSwinging = false;
-            if (callback) callback();
-            return;
-        }
-
-        if (angle > 60) { angle = 60; angularVelocity *= -0.7; }
-        if (angle < -60) { angle = -60; angularVelocity *= -0.7; }
-
-        lampContainer.style.transform = `rotate(${angle}deg)`;
-        animationFrame = requestAnimationFrame(swing);
-    }
-
-    swing();
 }
 
 lampBulb.addEventListener("mousedown", startDrag);
@@ -120,10 +123,10 @@ lampBulb.addEventListener("dblclick", function () {
 let flickerInterval;
 
 function startFlicker() {
-    flickerInterval = setInterval(() => {
+    flickerInterval = setInterval(function () {
         if (Math.random() > 0.7) {
             lampLight.style.opacity = String(Math.random() * 0.8 + 0.2);
-            lampBulb.style.boxShadow = `0 0 ${Math.random() * 20 + 5}px rgba(255, 204, 0, 0.8)`;
+            lampBulb.style.boxShadow = "0 0 " + (Math.random() * 20 + 5) + "px rgba(255, 204, 0, 0.8)";
         }
     }, 400);
 }
@@ -145,9 +148,9 @@ let currentLightIndex = 0;
 
 lampBulb.addEventListener("click", function () {
     currentLightIndex = (currentLightIndex + 1) % lightColors.length;
-    const newColor = lightColors[currentLightIndex];
-    lampBulb.style.background = newColor.bulb;
-    lampLight.style.background = `radial-gradient(circle, ${newColor.glow} 0%, transparent 100%)`;
+    const c = lightColors[currentLightIndex];
+    lampBulb.style.background = c.bulb;
+    lampLight.style.background = "radial-gradient(circle, " + c.glow + " 0%, transparent 100%)";
 });
 
 document.body.classList.add("night-mode");
@@ -156,12 +159,11 @@ initBackground();
 function randomizeNeonEffect() {
     if (!document.body.classList.contains("night-mode")) return;
 
-    document.querySelectorAll("#main > a").forEach(button => {
-        const randomOpacity = Math.random() * 0.8 + 0.2;
-        const randomBlur = Math.random() * 4 + 1;
-        button.style.setProperty("--neon-opacity", randomOpacity);
-        button.style.setProperty("--neon-blur", `${randomBlur}px`);
+    document.querySelectorAll("#main > a").forEach(function (button) {
+        button.style.setProperty("--neon-opacity", Math.random() * 0.8 + 0.2);
+        button.style.setProperty("--neon-blur", (Math.random() * 4 + 1) + "px");
     });
 
     setTimeout(randomizeNeonEffect, Math.random() * 1500 + 500);
 }
+randomizeNeonEffect();

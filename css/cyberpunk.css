@@ -73,6 +73,7 @@ canvas {
     width: 100%;
     height: 100%;
     z-index: 1;
+    transition: opacity 1.5s ease;
 }
 
 /* --- Heading --- */
@@ -92,7 +93,7 @@ canvas {
     text-shadow:
         0 0 6px rgba(0, 255, 255, 0.6),
         0 0 20px rgba(0, 255, 255, 0.25);
-    transition: text-shadow 0.3s, color 0.3s, border-color 0.3s;
+    transition: text-shadow 0.3s, color 0.3s, border-color 0.3s, opacity 0.8s ease;
 }
 
 h1.general-text {
@@ -252,7 +253,7 @@ h1.general-text {
     letter-spacing: 2px;
     color: #0ff;
     cursor: pointer;
-    transition: text-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
+    transition: text-shadow 0.3s ease-in-out, color 0.3s ease-in-out, opacity 0.8s ease;
     text-shadow: 0 0 4px rgba(0, 255, 255, 0.3);
 }
 
@@ -274,6 +275,7 @@ h1.general-text {
     z-index: 0;
     overflow: hidden;
     opacity: 0;
+    pointer-events: none;
     transition: opacity 1.5s ease;
     background: #000;
     -webkit-transform: translateZ(0);
@@ -282,6 +284,7 @@ h1.general-text {
 
 .video-bg.active {
     opacity: 1;
+    pointer-events: auto;
 }
 
 .video-bg iframe {
@@ -297,14 +300,12 @@ h1.general-text {
 
 body.broadcasting canvas {
     opacity: 0.35;
-    transition: opacity 1.5s ease;
 }
 
 body.broadcasting .general-text,
 body.broadcasting .time-display {
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.8s ease;
 }
 
 /* CRT overlay — sits above all content */
@@ -325,34 +326,27 @@ body.broadcasting .crt-overlay {
     opacity: 1;
 }
 
-.crt-scanlines {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: repeating-linear-gradient(
-        to bottom,
-        transparent 0px,
-        transparent 3px,
-        rgba(0, 0, 0, 0.12) 3px,
-        rgba(0, 0, 0, 0.12) 4px
-    );
-}
-
-.crt-vignette {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: radial-gradient(
-        ellipse at center,
-        transparent 40%,
-        rgba(0, 0, 0, 0.6) 100%
-    );
-}
-
+.crt-scanlines,
+.crt-vignette,
 .crt-flicker {
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
+}
+
+.crt-scanlines {
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px, transparent 3px,
+        rgba(0, 0, 0, 0.12) 3px, rgba(0, 0, 0, 0.12) 4px
+    );
+}
+
+.crt-vignette {
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+.crt-flicker {
     animation: crtFlicker 5s infinite;
 }
 
@@ -406,21 +400,6 @@ body.broadcasting .crt-overlay {
     color: #ff6fb5;
     border-color: rgba(255, 45, 149, 0.6);
     box-shadow: 0 0 16px rgba(255, 45, 149, 0.2);
-}
-
-/* --- Black screen overlay --- */
-
-.black-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: black;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.7s ease-in-out, visibility 0s linear 0.7s;
-    z-index: 9999;
 }
 
 /* --- Mobile --- */

@@ -440,13 +440,6 @@ body {
                 0 0 100px rgba(255, 200, 100, 0.3);
 }
 
-/* --- Mode backgrounds --- */
-
-body.night-mode {
-    background: linear-gradient(135deg, #1c1f26, #2a2d34);
-    color: #fff;
-}
-
 /* --- Page transitions --- */
 
 .fade-out {
@@ -462,28 +455,6 @@ body.night-mode {
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
-}
-
-/* --- Snowflakes --- */
-
-.snowflake {
-    position: absolute;
-    top: -10px;
-    color: white;
-    font-size: 8px;
-    opacity: 0.8;
-    animation: snowfall linear infinite;
-}
-
-@keyframes snowfall {
-    from {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateY(100vh);
-        opacity: 0;
-    }
 }
 
 /* --- Responsive --- */

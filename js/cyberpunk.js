@@ -8,11 +8,16 @@ addGlitchEffect();
 
 const canvas = document.getElementById("matrixCanvas");
 const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+let columns, drops;
 
-const columns = Math.floor(canvas.width / 20);
-const drops = Array(columns).fill(0);
+function resizeMatrix() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    columns = Math.floor(canvas.width / 20);
+    drops = Array(columns).fill(0);
+}
+resizeMatrix();
+window.addEventListener("resize", resizeMatrix);
 
 function drawMatrix() {
     ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
@@ -116,7 +121,7 @@ function startBroadcast() {
 function stopBroadcast() {
     videoBg.classList.remove("active");
     document.body.classList.remove("broadcasting");
-    bgVideo.src = "";
+    setTimeout(function () { bgVideo.src = ""; }, 1600);
     broadcastBtn.textContent = "▶\uFE0E Broadcast";
     broadcastBtn.classList.remove("on");
     broadcasting = false;
