@@ -10,37 +10,69 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let currentLyricIndex = -1;
 
-    const errorMessages = [
-        "FATAL: Neural link severed at 0x7F3A",
-        "WARNING: Memory leak in sector 9",
-        "ERR_CONNECTION_LOST: Host unreachable",
-        "CRITICAL: Firewall breach detected",
-        "SEGFAULT: Core dumped at 0xDEADBEEF",
-        "ALERT: Unauthorized access attempt",
-        "ERROR: Consciousness buffer overflow",
-        "WARNING: Reality desync detected",
-        "FATAL: Dream sequence corrupted",
-        "ERR_TIMEOUT: Signal lost in the void",
-        "PANIC: Kernel trap at 0xCAFEBABE",
-        "WARNING: Temporal anomaly in thread 42",
-        "ERROR: Identity matrix singular",
-        "CRITICAL: Emotion module unresponsive",
-        "FATAL: Synaptic overflow in node 7",
-        "WARNING: Ghost process detected in PID 404",
-        "ERR_DECODE: Corrupted memory fragment",
-        "ALERT: Unauthorized dream injection",
-        "CRITICAL: Soul.exe has stopped responding",
-        "FATAL: Heartbeat daemon terminated",
+    const ghostQuotes = [
+        "ネットは広大だわ",
+        "あなたのゴーストが、そう囁くの？",
+        "我々の記憶が、我々自身を定義する",
+        "孤独に歩め。悪をなさず、求めるところは少なく",
+        "人形使い：私は情報の海で生まれた生命体だ",
+        "ゴーストが囁くのよ——この先に何かがある",
+        "人間が人間であるための部品が決して少なくないように、自分が自分であるためには驚くほど多くのものが必要だ",
+        "記憶が人格を作るなら、偽りの記憶は偽りの人格を生む",
+        "自分の意志でダイブするのか。それとも誰かにダイブさせられているのか",
+        "コピーはオリジナルと同じではない。しかし、コピーにもゴーストは宿る",
+        "あなたはあなた自身のゴーストに向き合ったことがあるか",
+        "私は私の記憶だ。だが、その記憶が書き換えられたとしたら？",
+        "人は他者を完全に理解することはできない。自分自身をも",
+        "疑う余地のないものなど、この世に存在するのか",
+        "この世に不変のものなどない——ゴーストでさえ",
+        "体は朽ちても、ゴーストは残る",
+        "義体が求めるのは機能。ゴーストが求めるのは存在",
+        "すべてが情報なら、すべては操作可能ということだ",
+        "世界を見るとは、世界に解釈を加えることだ",
+        "我思う、ゆえに我あり——だが、思う我は何者だ",
+        "笑い男：僕の名前を覚えてくれ",
+        "それでも、ゴーストは囁き続ける",
+        "人形遣い：生命とは、情報の流れの中に生まれた結節点のようなもの",
+        "私が私でなくなっても、ゴーストは変わらないと信じたい",
+        "データの海に溶けていく——それは死か、それとも進化か",
+        "過去の記憶が奪われた時、人は何者として生きるのか",
+        "電脳は言葉を伝える。だがゴーストは沈黙の中で語る",
+        "この身体は借り物。だがこの意志は——私のもの",
+        "真実は常にひとつではない。視点の数だけ存在する",
+        "技術が人を変えるのではない。人が技術に映されるだけだ",
+        "ネットの果てに何がある？　答えを知る者はまだいない",
+        "全ての壁は、越えるために存在する",
+        "stand alone complex——孤独でありながら、繋がっている",
+        "情報は自由を望む。だが自由には代償がある",
+        "肉体を失っても、魂が残るなら——それは人間か",
     ];
 
-    function randomError() {
-        return errorMessages[Math.floor(Math.random() * errorMessages.length)];
+    function randomQuote() {
+        return ghostQuotes[Math.floor(Math.random() * ghostQuotes.length)];
     }
 
     function scrambleTerminal() {
         if (!terminal) return;
         const spans = terminal.querySelectorAll(".commandline-text");
-        spans.forEach(span => { span.textContent = randomError(); });
+        spans.forEach(span => { span.textContent = randomQuote(); });
+    }
+
+    const headerElements = document.querySelectorAll(".general-text");
+    const originalHeaders = Array.from(headerElements).map(el => el.textContent);
+    const terminalSpans = terminal ? terminal.querySelectorAll(".commandline-text") : [];
+    const originalTerminal = Array.from(terminalSpans).map(el => el.textContent);
+
+    function scrambleHeaders() {
+        headerElements.forEach(el => { el.textContent = randomQuote(); });
+    }
+
+    function restoreHeaders() {
+        headerElements.forEach((el, i) => { el.textContent = originalHeaders[i]; });
+    }
+
+    function restoreTerminal() {
+        terminalSpans.forEach((el, i) => { el.textContent = originalTerminal[i]; });
     }
 
     function showLyric(song, index) {
@@ -68,6 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (window.currentBroadcastSong) {
                 scrambleTerminal();
+                scrambleHeaders();
                 const song = allSongs.find(s => s.title === window.currentBroadcastSong);
                 if (song) {
                     const nextIndex = (currentLyricIndex + 1) % song.lyrics.japanese.length;
@@ -92,6 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (song) {
                 showLyric(song, 0);
                 scrambleTerminal();
+                scrambleHeaders();
             }
         } catch (e) {
             console.error("Error in showFirstCyberLyric:", e);
@@ -99,6 +133,11 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     window.showRandomCyberLyric = handleClick;
+    window.scrambleCyberHeaders = scrambleHeaders;
+    window.restoreCyberHeaders = function () {
+        restoreHeaders();
+        restoreTerminal();
+    };
 
     poemElement.addEventListener("click", handleClick);
 });

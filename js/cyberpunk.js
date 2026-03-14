@@ -115,6 +115,7 @@ function startBroadcast() {
     broadcastBtn.classList.add("on");
     broadcasting = true;
     window.currentBroadcastSong = title;
+    if (window.scrambleCyberHeaders) window.scrambleCyberHeaders();
     if (window.showFirstCyberLyric) window.showFirstCyberLyric(title);
 }
 
@@ -126,6 +127,7 @@ function stopBroadcast() {
     broadcastBtn.classList.remove("on");
     broadcasting = false;
     window.currentBroadcastSong = null;
+    if (window.restoreCyberHeaders) window.restoreCyberHeaders();
     if (window.showRandomCyberLyric) window.showRandomCyberLyric();
 }
 
