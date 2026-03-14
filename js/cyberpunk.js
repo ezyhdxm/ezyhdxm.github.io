@@ -88,10 +88,20 @@ const videoBg = document.getElementById("videoBg");
 const bgVideo = document.getElementById("bgVideo");
 const broadcastBtn = document.getElementById("broadcastBtn");
 let broadcasting = false;
+const playHistory = [];
+
+function pickSong() {
+    const titles = Object.keys(cyberVideos);
+    const unplayed = titles.filter(t => !playHistory.includes(t));
+    const pool = unplayed.length > 0 ? unplayed : titles;
+    if (unplayed.length === 0) playHistory.length = 0;
+    const title = pool[Math.floor(Math.random() * pool.length)];
+    playHistory.push(title);
+    return title;
+}
 
 function startBroadcast() {
-    const titles = Object.keys(cyberVideos);
-    const title = titles[Math.floor(Math.random() * titles.length)];
+    const title = pickSong();
     bgVideo.src = "https://www.youtube.com/embed/" + cyberVideos[title]
         + "?autoplay=1&rel=0&controls=0&showinfo=0&modestbranding=1&loop=1&playlist=" + cyberVideos[title];
     videoBg.classList.add("active");
