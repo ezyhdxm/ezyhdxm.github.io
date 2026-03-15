@@ -175,7 +175,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (window.currentBroadcastSong) {
                 scrambleTerminal();
-                if (Math.random() < 0.1) flashQuote();
                 const song = allSongs.find(s => s.title === window.currentBroadcastSong);
                 if (song) {
                     const nextIndex = (currentLyricIndex + 1) % song.lyrics.japanese.length;
@@ -200,7 +199,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (song) {
                 showLyric(song, 0);
                 scrambleTerminal();
-                flashQuote();
             }
         } catch (e) {
             console.error("Error in showFirstCyberLyric:", e);

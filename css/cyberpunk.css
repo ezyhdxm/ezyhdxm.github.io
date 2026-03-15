@@ -413,8 +413,8 @@ body.broadcasting .crt-overlay {
 
 .mute-btn {
     position: fixed;
-    bottom: 24px;
-    right: 160px;
+    bottom: 62px;
+    right: 24px;
     z-index: 10001;
     font-family: "Orbitron", sans-serif;
     font-size: 0.5rem;
@@ -465,6 +465,6 @@ body.broadcasting .crt-overlay {
         border-color: rgba(255, 45, 149, 0.5);
         box-shadow: 0 0 14px rgba(255, 45, 149, 0.15), inset 0 0 8px rgba(255, 45, 149, 0.05);
     }
-    .mute-btn { bottom: 16px; right: auto; left: 16px; font-size: 0.45rem; padding: 8px 12px; }
+    .mute-btn { bottom: 54px; right: 16px; font-size: 0.45rem; padding: 8px 12px; }
     .video-bg iframe { width: 300vw; height: 300vh; }
 }
