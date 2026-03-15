@@ -131,15 +131,20 @@ document.addEventListener("DOMContentLoaded", () => {
     let flashTimer = null;
 
     function flashQuote() {
-        if (!h1Element) return;
+        if (!h1Element || window.currentBroadcastSong) return;
         h1Element.textContent = randomQuote();
         h1Element.style.opacity = "1";
         clearTimeout(flashTimer);
         flashTimer = setTimeout(() => { h1Element.style.opacity = "0"; }, 1200);
     }
 
-    function restoreHeaders() {
+    function cancelFlash() {
         clearTimeout(flashTimer);
+        if (h1Element) h1Element.style.opacity = "";
+    }
+
+    function restoreHeaders() {
+        cancelFlash();
         headerElements.forEach((el, i) => {
             el.textContent = originalHeaders[i];
             el.style.opacity = "";
@@ -183,6 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
 
+            flashQuote();
             const pool = allSongs.filter(s => s.artist !== "ヨルシカ");
             const song = pool[Math.floor(Math.random() * pool.length)];
             showLyric(song, Math.floor(Math.random() * song.lyrics.japanese.length));
@@ -194,6 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.showFirstCyberLyric = async function (title) {
         try {
+            cancelFlash();
             const allSongs = await window.lyricsLoader.loadAll();
             const song = allSongs.find(s => s.title === title);
             if (song) {
