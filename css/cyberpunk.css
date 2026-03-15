@@ -409,6 +409,38 @@ body.broadcasting .crt-overlay {
     box-shadow: 0 0 16px rgba(255, 45, 149, 0.2);
 }
 
+/* --- Mute button --- */
+
+.mute-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 160px;
+    z-index: 10001;
+    font-family: "Orbitron", sans-serif;
+    font-size: 0.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(0, 255, 255, 0.4);
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(0, 255, 255, 0.12);
+    padding: 8px 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.mute-btn:hover {
+    color: rgba(0, 255, 255, 0.8);
+    border-color: rgba(0, 255, 255, 0.3);
+}
+
+.mute-btn.unmuted {
+    color: #0ff;
+    border-color: rgba(0, 255, 255, 0.4);
+    text-shadow: 0 0 6px rgba(0, 255, 255, 0.5);
+}
+
 /* --- Mobile --- */
 
 @media (max-width: 768px) {
@@ -433,5 +465,6 @@ body.broadcasting .crt-overlay {
         border-color: rgba(255, 45, 149, 0.5);
         box-shadow: 0 0 14px rgba(255, 45, 149, 0.15), inset 0 0 8px rgba(255, 45, 149, 0.05);
     }
+    .mute-btn { bottom: 16px; right: auto; left: 16px; font-size: 0.45rem; padding: 8px 12px; }
     .video-bg iframe { width: 300vw; height: 300vh; }
 }

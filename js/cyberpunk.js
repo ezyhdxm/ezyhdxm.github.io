@@ -80,7 +80,8 @@ timeDisplay.addEventListener("click", function () {
 
 /* =============================================
    Broadcast — fullscreen video background
-   Song title → YouTube video ID for cyberpunk songs.
+   Uses YouTube IFrame Player API for mute/unmute
+   without reloading the video.
    ============================================= */
 
 const cyberVideos = {
@@ -90,10 +91,19 @@ const cyberVideos = {
 };
 
 const videoBg = document.getElementById("videoBg");
-const bgVideo = document.getElementById("bgVideo");
 const broadcastBtn = document.getElementById("broadcastBtn");
+const muteBtn = document.getElementById("muteBtn");
 let broadcasting = false;
+let muted = true;
+let ytPlayer = null;
+let ytReady = false;
 const playHistory = [];
+
+(function loadYTApi() {
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+})();
 
 function pickSong() {
     const titles = Object.keys(cyberVideos);
@@ -105,14 +115,52 @@ function pickSong() {
     return title;
 }
 
+function createPlayer(videoId, onReady) {
+    if (ytPlayer) {
+        ytPlayer.destroy();
+        ytPlayer = null;
+        ytReady = false;
+        const fresh = document.createElement("div");
+        fresh.id = "bgVideo";
+        videoBg.appendChild(fresh);
+    }
+    ytPlayer = new YT.Player("bgVideo", {
+        videoId: videoId,
+        playerVars: {
+            autoplay: 1,
+            mute: 1,
+            playsinline: 1,
+            rel: 0,
+            controls: 0,
+            showinfo: 0,
+            modestbranding: 1,
+            loop: 1,
+            playlist: videoId
+        },
+        events: {
+            onReady: function (e) {
+                ytReady = true;
+                e.target.playVideo();
+                if (onReady) onReady();
+            }
+        }
+    });
+}
+
 function startBroadcast() {
     const title = pickSong();
-    bgVideo.src = "https://www.youtube.com/embed/" + cyberVideos[title]
-        + "?autoplay=1&mute=1&playsinline=1&rel=0&controls=0&showinfo=0&modestbranding=1&loop=1&playlist=" + cyberVideos[title];
+    const videoId = cyberVideos[title];
+    muted = true;
+    createPlayer(videoId, function () {
+        ytPlayer.mute();
+    });
     videoBg.classList.add("active");
     document.body.classList.add("broadcasting");
     broadcastBtn.textContent = "■\uFE0E " + title;
     broadcastBtn.classList.add("on");
+    muteBtn.style.display = "";
+    muteBtn.textContent = "♪\uFE0E OFF";
+    muteBtn.classList.remove("unmuted");
     broadcasting = true;
     window.currentBroadcastSong = title;
     if (window.showFirstCyberLyric) window.showFirstCyberLyric(title);
@@ -121,9 +169,19 @@ function startBroadcast() {
 function stopBroadcast() {
     videoBg.classList.remove("active");
     document.body.classList.remove("broadcasting");
-    setTimeout(function () { bgVideo.src = ""; }, 1600);
+    setTimeout(function () {
+        if (ytPlayer) {
+            ytPlayer.destroy();
+            ytPlayer = null;
+            ytReady = false;
+            var fresh = document.createElement("div");
+            fresh.id = "bgVideo";
+            videoBg.appendChild(fresh);
+        }
+    }, 1600);
     broadcastBtn.textContent = "▶\uFE0E Broadcast";
     broadcastBtn.classList.remove("on");
+    muteBtn.style.display = "none";
     broadcasting = false;
     window.currentBroadcastSong = null;
     if (window.restoreCyberHeaders) window.restoreCyberHeaders();
@@ -137,4 +195,18 @@ broadcastBtn.addEventListener("click", function (e) {
     } else {
         startBroadcast();
     }
+});
+
+muteBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    if (!broadcasting || !ytPlayer || !ytReady) return;
+    muted = !muted;
+    if (muted) {
+        ytPlayer.mute();
+    } else {
+        ytPlayer.unMute();
+        ytPlayer.setVolume(100);
+    }
+    muteBtn.textContent = muted ? "♪\uFE0E OFF" : "♪\uFE0E ON";
+    muteBtn.classList.toggle("unmuted", !muted);
 });
