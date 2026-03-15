@@ -97,6 +97,8 @@ let broadcasting = false;
 let muted = true;
 let ytPlayer = null;
 let ytReady = false;
+let ytApiLoaded = false;
+let pendingBroadcast = null;
 const playHistory = [];
 
 (function loadYTApi() {
@@ -104,6 +106,14 @@ const playHistory = [];
     tag.src = "https://www.youtube.com/iframe_api";
     document.head.appendChild(tag);
 })();
+
+window.onYouTubeIframeAPIReady = function () {
+    ytApiLoaded = true;
+    if (pendingBroadcast) {
+        pendingBroadcast();
+        pendingBroadcast = null;
+    }
+};
 
 function pickSong() {
     const titles = Object.keys(cyberVideos);
@@ -147,8 +157,7 @@ function createPlayer(videoId, onReady) {
     });
 }
 
-function startBroadcast() {
-    const title = pickSong();
+function launchBroadcast(title) {
     const videoId = cyberVideos[title];
     muted = true;
     createPlayer(videoId, function () {
@@ -164,6 +173,16 @@ function startBroadcast() {
     broadcasting = true;
     window.currentBroadcastSong = title;
     if (window.showFirstCyberLyric) window.showFirstCyberLyric(title);
+}
+
+function startBroadcast() {
+    const title = pickSong();
+    if (!ytApiLoaded) {
+        broadcastBtn.textContent = "⟳ Loading...";
+        pendingBroadcast = function () { launchBroadcast(title); };
+        return;
+    }
+    launchBroadcast(title);
 }
 
 function stopBroadcast() {
