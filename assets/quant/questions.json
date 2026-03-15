@@ -1,0 +1,78 @@
+[
+    {
+        "id": "noodles",
+        "description": "Noodle loops",
+        "question": [
+            "You have 100 noodles in a bowl.",
+            "Each step, you randomly pick two free ends",
+            "(from any noodles) and tie them together.",
+            "After all 100 steps (all ends tied),",
+            "what is the expected number of loops?"
+        ],
+        "answer": 5.1874,
+        "tolerance": 0.02,
+        "hint": "At step k, there are 2(101-k) free ends. One end is picked. The probability it ties to its own other end (forming a loop) is 1/(2(101-k)-1). Sum these probabilities: 1/199 + 1/197 + ... + 1/1.",
+        "difficulty": "hard",
+        "category": "expected value"
+    },
+    {
+        "id": "coupon_collector",
+        "description": "Coupon collector (die)",
+        "question": [
+            "You roll a fair 6-sided die repeatedly.",
+            "What is the expected number of rolls",
+            "needed to see all 6 faces at least once?"
+        ],
+        "answer": 14.7,
+        "tolerance": 0.1,
+        "hint": "After seeing k distinct faces, the probability of a new face on the next roll is (6-k)/6. The expected rolls for that stage is 6/(6-k). Sum over k = 0..5.",
+        "difficulty": "medium",
+        "category": "expected value"
+    },
+    {
+        "id": "broken_stick",
+        "description": "Broken stick triangle",
+        "question": [
+            "A stick of length 1 is broken at two",
+            "points chosen uniformly at random.",
+            "What is the probability that the three",
+            "pieces can form a triangle?"
+        ],
+        "answer": 0.25,
+        "tolerance": 0.01,
+        "hint": "Three lengths form a triangle iff each is less than 1/2. If the two break points are (X,Y) uniform on [0,1]^2, what fraction of the unit square satisfies all three constraints?",
+        "difficulty": "medium",
+        "category": "probability"
+    },
+    {
+        "id": "first_ace",
+        "description": "First ace from deck",
+        "question": [
+            "A standard 52-card deck is shuffled.",
+            "Cards are drawn one at a time from the top.",
+            "What is the expected number of cards drawn",
+            "until (and including) the first ace?"
+        ],
+        "answer": 10.6,
+        "tolerance": 0.1,
+        "hint": "By symmetry, 4 aces divide the remaining 48 cards into 5 groups. Each group has expected size 48/5 = 9.6. The first ace appears after the first group, at position 9.6 + 1 = 10.6.",
+        "difficulty": "medium",
+        "category": "expected value"
+    },
+    {
+        "id": "random_walk_return",
+        "description": "Random walk return",
+        "question": [
+            "A symmetric random walk starts at 0.",
+            "At each step, it moves +1 or -1",
+            "with equal probability.",
+            "What is the probability of returning",
+            "to 0 in exactly 6 steps?"
+        ],
+        "answer": 0.3125,
+        "tolerance": 0.005,
+        "hint": "To return to 0 in 6 steps, you need exactly 3 heads and 3 tails. Count: C(6,3) = 20 paths out of 2^6 = 64 total. P = 20/64.",
+        "difficulty": "easy",
+        "category": "probability"
+    }
+]

@@ -308,9 +308,11 @@ body.broadcasting canvas {
     opacity: 0.35;
 }
 
+body.broadcasting .general-text,
 body.broadcasting .time-display {
     opacity: 0;
     pointer-events: none;
+    transition: opacity 0.4s ease;
 }
 
 /* CRT overlay — sits above all content */

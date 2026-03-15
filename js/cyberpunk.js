@@ -115,7 +115,6 @@ function startBroadcast() {
     broadcastBtn.classList.add("on");
     broadcasting = true;
     window.currentBroadcastSong = title;
-    if (window.scrambleCyberHeaders) window.scrambleCyberHeaders();
     if (window.showFirstCyberLyric) window.showFirstCyberLyric(title);
 }
 
