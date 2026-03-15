@@ -73,12 +73,26 @@ cbos.unlock(your_answer)
 
 If correct, the gateway opens and you're redirected to `cyberpunk.html`.
 
+## Shortcut: sudo gateway
+
+If you already know the credentials, skip the filesystem exploration:
+
+```js
+cbos.terminal()
+cbos.cmd('sudo gateway operator ghost')
+```
+
+The username is `operator` (found in `/etc/barrier/whitelist`) and the
+password is `ghost` (hinted in `/home/operator/.profile`). This jumps
+straight to the quant question.
+
 ## Extra Commands
 
 | Command | Description |
 |---------|-------------|
 | `cbos.hint()` | Get a hint for the current question |
 | `cbos.reroll()` | Get a different random question |
+| `cbos.cmd('sudo gateway <user> <pass>')` | Authenticate directly to the gateway |
 | `cbos.cmd('help')` | List available shell commands |
 | `cbos.cmd('ls')` | List directory contents |
 | `cbos.cmd('cd path')` | Change directory |

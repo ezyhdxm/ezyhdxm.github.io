@@ -218,15 +218,35 @@
 
     function cmdPwd() { console.log("%c" + cwd, S_OUT); }
     function cmdWhoami() { console.log("%coperator", S_OUT); }
+
+    function cmdSudo(args) {
+        var parts = args.split(/\s+/);
+        if (parts.length < 2 || parts[0] !== "gateway") {
+            console.log("%ccbsh: sudo: usage: sudo gateway <user> <password>", S_ERR);
+            return;
+        }
+        var user = parts[1] || "";
+        var pass = parts[2] || "";
+        if (user === "operator" && pass === "ghost") {
+            console.log("%c[sudo] authentication successful for operator", S_OK);
+            console.log("%cbarrierd[980]: gateway access granted \u2014 loading question...\n", S_OUT);
+            cmdCat("/etc/barrier/gateway.locked");
+        } else {
+            console.log("%c[sudo] authentication failed: invalid credentials", S_ERR);
+            console.log("%cHint: check /home/operator/.profile and /etc/barrier/whitelist", S_OUT);
+        }
+    }
+
     function cmdHelp() {
         console.log("%c\u2500\u2500\u2500 cbsh \u2500\u2500\u2500", S_PROMPT);
-        console.log("%c  ls [path]    list directory", S_OUT);
-        console.log("%c  cd [path]    change directory", S_OUT);
-        console.log("%c  cat <file>   read file", S_OUT);
-        console.log("%c  pwd          print working directory", S_OUT);
-        console.log("%c  whoami       current user", S_OUT);
-        console.log("%c  clear        clear console", S_OUT);
-        console.log("%c  help         show this message", S_OUT);
+        console.log("%c  ls [path]          list directory", S_OUT);
+        console.log("%c  cd [path]          change directory", S_OUT);
+        console.log("%c  cat <file>         read file", S_OUT);
+        console.log("%c  pwd                print working directory", S_OUT);
+        console.log("%c  whoami             current user", S_OUT);
+        console.log("%c  sudo gateway <u> <p>  authenticate to gateway", S_OUT);
+        console.log("%c  clear              clear console", S_OUT);
+        console.log("%c  help               show this message", S_OUT);
     }
 
     function runCmd(input) {
@@ -244,6 +264,7 @@
             case "whoami": cmdWhoami(); break;
             case "help": cmdHelp(); break;
             case "clear": console.clear(); break;
+            case "sudo": cmdSudo(args); break;
             default:
                 console.log("%ccbsh: command not found: " + cmd, S_ERR);
         }
